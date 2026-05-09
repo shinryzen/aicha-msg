@@ -1,0 +1,117 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 1. Primitive helper functions
+    function isSignedIn() { return request.auth != null; }
+    function isEmailVerified() { return isSignedIn() && request.auth.token.email_verified == true; }
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.get('email', '').lower() == 'shinryzen@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+    function isSuperAdmin() { 
+      // Ensure the email matches exactly (case-insensitive) and is verified
+      return isEmailVerified() && request.auth.token.get('email', '').lower() == 'shinryzen@gmail.com'; 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+
+    // 2. User Profile Rules
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if false;
+      
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidUser(incoming());
+      allow update: if isSignedIn() && request.auth.uid == userId && isValidUser(incoming())
+                       && incoming().diff(existing()).affectedKeys().hasOnly(['nickname', 'avatar', 'profile', 'email', 'isAnonymous', 'updatedAt']);
+    }
+
+    function isValidUser(data) {
+      return data.nickname is string && data.nickname.size() > 0 && data.nickname.size() <= 128
+             && (!('email' in data) || data.email == null || (data.email is string && data.email.size() <= 256))
+             && (!('avatar' in data) || (data.avatar is string && data.avatar.size() <= 1000000))
+             && (!('isAnonymous' in data) || data.isAnonymous is bool)
+             && (!('profile' in data) || (data.profile is string && data.profile.size() <= 2000))
+             && (!('updatedAt' in data) || data.updatedAt is timestamp || data.updatedAt is string);
+    }
+
+    // 3. Ranking Rules
+    match /rankings/{period}/data/{userId} {
+      // Allow anyone to see the rankings - unauthenticated access supported
+      allow read: if true;
+      
+      // Only signed-in users can update their own or other's heart counts (send hearts)
+      allow create: if isSignedIn() && isValidRanking(incoming()) && incoming().userId == userId;
+      allow update: if isSignedIn() && isValidRanking(incoming()) 
+                      && (incoming().get('userId', '') == '' || incoming().userId == userId)
+                      && incoming().get('count', 0) >= existing().get('count', 0);
+    }
+
+    function isValidRanking(data) {
+      return (data.get('userId', '') == '' || (data.userId is string && data.userId.size() <= 128))
+             && (data.get('nickname', '') == '' || (data.nickname is string && data.nickname.size() <= 128))
+             && (data.get('count', 0) == 0 || data.count is number)
+             && (data.get('updatedAt', null) == null || data.updatedAt is timestamp || data.updatedAt is string);
+    }
+
+    // 4. Config Rules
+    match /config/main {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // 5. Room & Messages Rules
+    match /rooms/{roomId} {
+      allow get: if true;
+      allow list: if true;
+      // Allow creation of lobby by anyone, others by signed-in users
+      allow create: if roomId == 'lobby' || (isSignedIn() && isValidRoom(incoming()));
+      // Update: Anyone in the room should be able to send reactions/status, but only creator/admin can change room settings
+      allow update: if (
+        // Common updates (reactions, speaking status, member lists)
+        isValidRoomUpdate(incoming(), existing())
+        || (isSignedIn() && (existing().get('creatorId', '') == request.auth.uid || isAdmin()))
+      );
+      
+      match /messages/{messageId} {
+        allow read: if true;
+        // Allow everyone to contribute messages provided they follow the schema
+        // We trust the client for senderId when not signed in, but still validate the structure
+        allow create: if isValidMessage(incoming()); 
+        allow update: if false;
+        allow delete: if isAdmin() || (isSignedIn() && existing().get('senderId', '') == request.auth.uid);
+      }
+    }
+
+    function isValidRoomUpdate(inv, ext) {
+      // Allow specific updates to state fields without full creator permissions
+      return inv.diff(ext).affectedKeys().hasOnly(['lastAction', 'activeSpeakers', 'updatedAt']);
+    }
+
+    function isValidRoom(data) {
+      return data.get('title', '') is string && data.get('title', '').size() > 0
+             && data.get('creatorId', '') is string
+             && (!('isPrivate' in data) || data.isPrivate is bool);
+    }
+
+    function isValidMessage(data) {
+      return data.text is string && data.text.size() > 0 && data.text.size() <= 3000
+             && data.senderId is string && data.senderId.size() <= 128
+             && data.senderName is string && data.senderName.size() <= 128
+             && (!('color' in data) || (data.color is string && data.color.size() <= 20))
+             && (!('timestamp' in data) || data.timestamp is timestamp || data.timestamp is number);
+    }
+
+    // 6. Test Connection
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}

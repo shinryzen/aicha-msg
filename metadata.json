@@ -1,0 +1,6 @@
+{
+  "name": "あいちゃ 2.0.0",
+  "description": "ブラウザで今すぐ使える、高音質・低遅延の次世代リアルタイム・メッセンジャー。Version 2.0.0 Baseline.",
+  "requestFramePermissions": ["microphone", "camera", "clipboard-read"],
+  "majorCapabilities": []
+}

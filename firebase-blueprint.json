@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile data including nickname and avatar",
+      "type": "object",
+      "properties": {
+        "nickname": { "type": "string", "description": "Users display name" },
+        "avatar": { "type": "string", "description": "Base64 or URL of user avatar" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["nickname"]
+    },
+    "Room": {
+      "title": "Chat Room",
+      "description": "Metadata for a chat or voice room",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "isPrivate": { "type": "boolean" },
+        "passkey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "maxMembers": { "type": "number" }
+      },
+      "required": ["title", "creatorId"]
+    },
+    "AppConfig": {
+      "title": "App Configuration",
+      "description": "Global application settings",
+      "type": "object",
+      "properties": {
+        "isActive": { "type": "boolean" },
+        "passkey": { "type": "string" },
+        "systemBehavior": { "type": "string" },
+        "jingleUrl": { "type": "string" },
+        "assetUrl": { "type": "string" },
+        "appIconUrl": { "type": "string" },
+        "maintenanceMessage": { "type": "string" },
+        "welcomeTitle": { "type": "string" },
+        "welcomeSubtitle": { "type": "string" },
+        "welcomeFeatures": { "type": "array", "items": { "type": "string" } },
+        "newsLines": { "type": "array", "items": { "type": "string" }, "description": "Latest news (2 lines)" },
+        "landingTitle": { "type": "string" },
+        "landingDescription": { "type": "string" },
+        "loginWelcomeMessage": { "type": "string" },
+        "postLoginWelcomeTitle": { "type": "string" },
+        "postLoginWelcomeContent": { "type": "string" }
+      }
+    },
+    "HeartRanking": {
+      "title": "Heart Ranking",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "nickname": { "type": "string" },
+        "count": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User public/private profile"
+    },
+    "rankings/{periodType}/data/{userId}": {
+      "schema": "HeartRanking",
+      "description": "Ranking data for monthly or annual periods"
+    },
+    "config/main": {
+      "schema": "AppConfig",
+      "description": "Main application configuration"
+    },
+    "rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Room metadata"
+    },
+    "rooms/{roomId}/messages/{messageId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "senderId": { "type": "string" },
+          "senderName": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "description": "Real-time or persisted chat messages"
+    },
+    "test/connection": {
+      "schema": { "type": "object", "properties": {} },
+      "description": "Dummy path for connection testing"
+    }
+  }
+}
