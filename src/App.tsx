@@ -1,25 +1,25 @@
-<<<<<<< HEAD
+
 import React, { useState, useEffect, useRef, useCallback, FormEvent, MouseEvent, ChangeEvent } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { subscribeToConfig, updateAppConfig, auth, googleProvider, db, handleFirestoreError, OperationType } from './lib/firebase';
 import { signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signInAnonymously, User as FirebaseUser } from 'firebase/auth';
 import { getDoc, getDocFromServer, doc, setDoc, updateDoc, collection, query, where, orderBy, limit, getDocs, serverTimestamp, onSnapshot, addDoc, limitToLast } from 'firebase/firestore';
-=======
+
 import { useState, useEffect, useRef, useCallback, FormEvent, MouseEvent, ChangeEvent } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { subscribeToConfig, updateAppConfig, auth, googleProvider, db, handleFirestoreError, OperationType } from './lib/firebase';
 import { signInWithPopup, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { getDoc, getDocFromServer, doc as firestoreDoc, setDoc as firestoreSetDoc } from 'firebase/firestore';
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 import { getAiChaResponse } from './lib/gemini';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from './components/ui/card';
 import { ScrollArea } from './components/ui/scroll-area';
 import { Badge } from './components/ui/badge';
-<<<<<<< HEAD
+
 import { User, Send, Users, Zap, LogOut, MessageSquare, Mic, MicOff, Clock, List, FilePlus, Settings, MessageCircle, UserCircle, UserX, X, Volume2, Headphones, Smartphone, ArrowRight, UserPlus, UserMinus, File, Download, StopCircle, CheckCircle, Home, Lock, PlusCircle, Palette, Phone, PhoneOff, ChevronDown, Info, MessageSquareText, ChevronRight, Heart, Search, Shield, Eye, Monitor, Video, Hash, VolumeX, RefreshCw, BellRing } from 'lucide-react';
-=======
+
 import { User, Send, Users, Zap, LogOut, MessageSquare, Mic, MicOff, Clock, List, FilePlus, Settings, MessageCircle, UserCircle, UserX, X, Volume2, Headphones, Smartphone, ArrowRight, UserPlus, UserMinus, File, Download, StopCircle, CheckCircle, Home, Lock, PlusCircle, Palette, Phone, PhoneOff, ChevronDown, Info, MessageSquareText, ChevronRight, Heart, Search, Shield, Eye, Monitor } from 'lucide-react';
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 import { Message, Peer, TalkState, FileTransfer } from './types';
@@ -32,7 +32,6 @@ const ICE_SERVERS = {
   iceServers: [
     { urls: 'stun:stun.l.google.com:19302' },
     { urls: 'stun:stun1.l.google.com:19302' },
-<<<<<<< HEAD
     { urls: 'stun:stun2.l.google.com:19302' },
     { urls: 'stun:stun3.l.google.com:19302' },
     { urls: 'stun:stun4.l.google.com:19302' },
@@ -152,7 +151,7 @@ function VolumeIndicator({ stream, active, variant = 'default', theme = 'cute' }
   const audioContextRef = useRef<AudioContext | null>(null);
 
   const SEGMENTS = 15;
-=======
+
   ],
 };
 
@@ -160,7 +159,7 @@ function VolumeIndicator({ stream, active }: { stream: MediaStream | null; activ
   const [level, setLevel] = useState(0);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationRef = useRef<number | null>(null);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 
   useEffect(() => {
     if (!active || !stream || stream.getAudioTracks().length === 0) {
@@ -168,7 +167,6 @@ function VolumeIndicator({ stream, active }: { stream: MediaStream | null; activ
       return;
     }
 
-<<<<<<< HEAD
     const startAnalysis = async () => {
       try {
         if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
@@ -244,7 +242,7 @@ function VolumeIndicator({ stream, active }: { stream: MediaStream | null; activ
             level > i 
               ? (variant === 'white' ? "bg-white shadow-[0_0_5px_rgba(255,255,255,0.5)] scale-110" : barColor) 
               : (variant === 'white' ? "bg-white/10" : "bg-black/5")
-=======
+
     let audioContext: AudioContext | null = null;
     let source: MediaStreamAudioSourceNode | null = null;
 
@@ -297,7 +295,7 @@ function VolumeIndicator({ stream, active }: { stream: MediaStream | null; activ
           className={cn(
             "w-1 h-full border-[0.5px] border-black/10", 
             level > i ? "bg-[#00ff00]" : "bg-gray-200"
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           )} 
         />
       ))}
@@ -404,7 +402,6 @@ const THEME_CONFIG = {
 };
 
 // --- Audio Helpers ---
-<<<<<<< HEAD
 function modifySDPForDTX(sdp: string) {
   let lines = sdp.split('\r\n');
   const opusIndex = lines.findIndex(line => line.includes('a=rtpmap:') && line.includes('opus/48000'));
@@ -423,8 +420,8 @@ function modifySDPForDTX(sdp: string) {
   return lines.join('\r\n');
 }
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
 function setAudioBitrate(sdp: string, bitrate: number) {
   let lines = sdp.split('\r\n');
   let lineIndex = lines.findIndex(line => line.indexOf('a=rtpmap:') !== -1 && line.indexOf('opus/48000') !== -1);
@@ -443,7 +440,6 @@ function setAudioBitrate(sdp: string, bitrate: number) {
     lines.splice(lineIndex + 1, 0, `a=fmtp:${payload} maxaveragebitrate=${bitrate * 1000}`);
   }
 
-<<<<<<< HEAD
   // Also apply DTX update
   return modifySDPForDTX(lines.join('\r\n'));
 }
@@ -473,7 +469,7 @@ const PeerAudio = ({ stream, audible }: { stream: MediaStream, audible: boolean 
 export default function App() {
   const [googleUser, setGoogleUser] = useState<FirebaseUser | null>(null);
 
-=======
+
   return lines.join('\r\n');
 }
 
@@ -539,7 +535,7 @@ export default function App() {
       </div>
     );
   };
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [hasRegisteredNickname, setHasRegisteredNickname] = useState(false);
   const [loginStep, setLoginStep] = useState(1);
@@ -582,14 +578,13 @@ export default function App() {
   const [isRoomWaitAlertOpen, setIsRoomWaitAlertOpen] = useState(false);
   const [roomWaitQueueId, setRoomWaitQueueId] = useState<string | null>(null);
   const [showHeartLimitModal, setShowHeartLimitModal] = useState(false);
-<<<<<<< HEAD
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [soundLevel, setSoundLevel] = useState<'off' | 'low' | 'medium' | 'high'>('medium');
   const [roomSearchQuery, setRoomSearchQuery] = useState('');
   const [audioQuality, setAudioQuality] = useState<24 | 16 | 12 | 6>(16);
-=======
+
   const [audioQuality, setAudioQuality] = useState<24 | 12 | 6>(24);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   const [dataSaverMode, setDataSaverMode] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
@@ -597,7 +592,6 @@ export default function App() {
   const [showMobileInfo, setShowMobileInfo] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
-<<<<<<< HEAD
   const [emojiReactions, setEmojiReactions] = useState<any[]>([]);
   const [selectedColor, setSelectedColor] = useState('#000000');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -622,19 +616,18 @@ export default function App() {
   const [customStatusInput, setCustomStatusInput] = useState('');
   const [isEditingCustomStatus, setIsEditingCustomStatus] = useState(false);
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-=======
+
   const [peers, setPeers] = useState<Record<string, Peer>>({});
   const [onlineUsers, setOnlineUsers] = useState<Record<string, { username: string, profile: string, status?: string, statusText?: string, avatar?: string }>>({});
   const [myStatus, setMyStatus] = useState<'online' | 'away' | 'custom' | 'hidden'>('online');
   const [customStatusInput, setCustomStatusInput] = useState('');
   const [isEditingCustomStatus, setIsEditingCustomStatus] = useState(false);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   const [myId, setMyId] = useState('');
   const [talkState, setTalkState] = useState<TalkState>({ hostId: null, speakers: [], queue: [] });
   const [userProfile, setUserProfile] = useState('');
   const [myAvatar, setMyAvatar] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-<<<<<<< HEAD
   const [notifications, setNotifications] = useState<{ id: string, text: string, type?: string, icon?: React.ReactNode, action?: () => void, actionLabel?: string }[]>([]);
   const [lastCrackerTime, setLastCrackerTime] = useState<number>(0);
   const [crackerHistory, setCrackerHistory] = useState<number[]>([]);
@@ -645,7 +638,7 @@ export default function App() {
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== id));
     }, 5000);
-=======
+
   const [notifications, setNotifications] = useState<{ id: string, text: string }[]>([]);
 
   const addNotification = (text: string) => {
@@ -654,7 +647,7 @@ export default function App() {
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== id));
     }, 4000);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   };
 
   const optimizeImage = (file: File): Promise<string> => {
@@ -708,14 +701,13 @@ export default function App() {
   const [showStatusPopover, setShowStatusPopover] = useState(false);
   const [showFilesExplorer, setShowFilesExplorer] = useState(false);
   const [theme, setTheme] = useState<'classic95' | 'cool' | 'cute'>('cute');
-<<<<<<< HEAD
   const tc = THEME_CONFIG[theme];
   const [showThemeDialog, setShowThemeDialog] = useState(false);
   const [settingsTab, setSettingsTab] = useState<'system' | 'audio' | 'block' | 'profile'>('system');
-=======
+
   const [showThemeDialog, setShowThemeDialog] = useState(false);
   const [settingsTab, setSettingsTab] = useState<'system' | 'block' | 'profile'>('system');
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   const [privateMessages, setPrivateMessages] = useState<Record<string, Message[]>>({});
   const [privateInput, setPrivateInput] = useState('');
 
@@ -725,16 +717,15 @@ export default function App() {
   const [pmAdTimer, setPmAdTimer] = useState<Record<string, number>>({});
   
   // Friend System States
-<<<<<<< HEAD
   const [friends, setFriends] = useState<Record<string, { username: string, profile: string, online?: boolean, avatar?: string, color?: string }>>({
     'test-user-aicha': { username: 'あいちゃ', profile: '次世代AIアシスタント', color: '#ff85a1' },
     'test-user-aita': { username: 'あいた', profile: '元気なムードメーカー', color: '#ffb7c5' },
     'test-user-aimi': { username: 'あいみ', profile: 'おっとり癒やし系', color: '#e0c3fc' },
     'test-user-chatcha': { username: 'ちゃっちゃ', profile: 'しっかり者のまとめ役', color: '#ffdae9' }
-=======
+
   const [friends, setFriends] = useState<Record<string, { username: string, profile: string, online?: boolean }>>({
     'test-user-aicha': { username: 'あいちゃ', profile: 'テストユーザー' }
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   });
   const [showFriendAd, setShowFriendAd] = useState(false);
   const [friendAdTarget, setFriendAdTarget] = useState<{ id: string, username: string } | null>(null);
@@ -742,7 +733,6 @@ export default function App() {
   const [incomingFriendRequest, setIncomingFriendRequest] = useState<{ from: string, fromName: string } | null>(null);
   const [incomingFriendTimer, setIncomingFriendTimer] = useState(10);
 
-<<<<<<< HEAD
   // Security: Prevent code inspection and theft attempts
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
@@ -771,8 +761,8 @@ export default function App() {
     };
   }, []);
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
   const [messengerTab, setMessengerTab] = useState<'friends' | 'chat' | 'files'>('friends');
   const [fileTransfers, setFileTransfers] = useState<FileTransfer[]>([]);
   const [incomingFileRequest, setIncomingFileRequest] = useState<FileTransfer | null>(null);
@@ -783,19 +773,17 @@ export default function App() {
   // AiCha Call States
   const [callRequest, setCallRequest] = useState<{ to: string, name: string, status: 'ad' | 'waiting' | 'accepted' | 'rejected' | 'failed' } | null>(null);
   const [incomingCall, setIncomingCall] = useState<{ from: string, name: string, avatar?: string, timer: number } | null>(null);
-<<<<<<< HEAD
   const [activeCall, setActiveCall] = useState<{ peerId: string, peerName: string, peerAvatar?: string, startTime: number, stream?: MediaStream, isVideo?: boolean } | null>(null);
   const [unreadPrivateMessages, setUnreadPrivateMessages] = useState<Set<string>>(new Set());
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const localVideoRef = useRef<HTMLVideoElement>(null);
-=======
+
   const [activeCall, setActiveCall] = useState<{ peerId: string, peerName: string, peerAvatar?: string, startTime: number } | null>(null);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   const [callTimer, setCallTimer] = useState(10);
   const [callDuration, setCallDuration] = useState(0);
   const privateCallPcRef = useRef<RTCPeerConnection | null>(null);
   const privateCallStreamRef = useRef<MediaStream | null>(null);
-<<<<<<< HEAD
 
   useEffect(() => {
     const saved = localStorage.getItem('aicha_private_messages');
@@ -845,11 +833,11 @@ export default function App() {
   const [availableRooms, setAvailableRooms] = useState<{ id: string, title: string, description: string, creatorId: string, isPrivate?: boolean }[]>([
     { id: 'lobby', title: 'ロビー', description: '最初のロビーです。誰でも歓迎！', creatorId: 'system', isPrivate: false }
   ]);
-=======
+
   
   // Room listing & creation state
   const [availableRooms, setAvailableRooms] = useState<{ id: string, title: string, description: string, creatorId: string }[]>([]);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   const [showCreateRoomDialog, setShowCreateRoomDialog] = useState(false);
   const [showRoomListExplorer, setShowRoomListExplorer] = useState(false);
   const handleJoinRef = useRef<any>(null);
@@ -858,17 +846,16 @@ export default function App() {
   const [createRoomForm, setCreateRoomForm] = useState({ title: '', description: '', isPrivate: false, passkey: '' });
   const [selectedRoomToJoin, setSelectedRoomToJoin] = useState<{ id: string, title: string, description: string, isPrivate?: boolean } | null>(null);
 
-<<<<<<< HEAD
   const joinTimestampRef = useRef<number>(Date.now());
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
   // Platform & Browser detection for "Add to Home Screen"
   const [platformInfo, setPlatformInfo] = useState<{ os: string, browser: string, canInstall: boolean }>({ os: '', browser: '', canInstall: false });
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
   useEffect(() => {
-<<<<<<< HEAD
+
     // Check for redirect result on load
     getRedirectResult(auth).catch((err) => {
       console.error("Auth redirect result error:", err);
@@ -877,14 +864,13 @@ export default function App() {
       }
     });
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setGoogleUser(user);
       setIsAuthLoading(false);
       
       if (user) {
-<<<<<<< HEAD
         playSystemSound('login');
         // Check for admin - Defaulting to shinryzen@gmail.com but allowing others to be added in future
         if (user.email && user.email.toLowerCase() === 'shinryzen@gmail.com') {
@@ -907,7 +893,7 @@ export default function App() {
             if (getDocErr.message?.includes('offline')) {
               // Try from server directly if offline error occurs
               userDoc = await getDocFromServer(doc(db, 'users', user.uid));
-=======
+
         // Check for admin
         if (user.email === 'shinryzen@gmail.com') {
           setIsAdmin(true);
@@ -923,7 +909,7 @@ export default function App() {
             if (getDocErr.message?.includes('offline')) {
               // Try from server directly if offline error occurs
               userDoc = await getDocFromServer(firestoreDoc(db, 'users', user.uid));
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             } else {
               throw getDocErr;
             }
@@ -935,21 +921,20 @@ export default function App() {
               setUsername(data.nickname);
               setHasRegisteredNickname(true);
               setIsNicknameReadOnly(true);
-<<<<<<< HEAD
               setLoginStep(3); // Go straight to enter
             } else {
               setLoginStep(2); // First login welcome
             }
           } else {
             setLoginStep(2); // First login welcome
-=======
+
               setLoginStep(2);
             } else {
               setLoginStep(2);
             }
           } else {
             setLoginStep(2);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           }
         } catch (err) {
           const wrappedError = handleFirestoreError(err, OperationType.GET, `users/${user.uid}`);
@@ -964,7 +949,6 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-<<<<<<< HEAD
   // Firestore Room Listing & Lobby Lifecycle
   useEffect(() => {
     if (!db) return;
@@ -1169,7 +1153,7 @@ export default function App() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [isJoined]);
 
-=======
+
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -1178,7 +1162,7 @@ export default function App() {
     }
   };
 
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   useEffect(() => {
     const unsubscribe = subscribeToConfig((config) => {
       setAppConfig(config);
@@ -1274,7 +1258,6 @@ export default function App() {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [isTalkLocked, setIsTalkLocked] = useState(false);
-<<<<<<< HEAD
   const [isFullMute, setIsFullMute] = useState(false);
 
   // We'll use a local ID for easier tracking
@@ -1422,7 +1405,7 @@ export default function App() {
     };
 
   useEffect(() => {
-=======
+
   
   // We'll use a local ID for easier tracking
   const isSpeaking = talkState.speakers.includes(myId || socketRef.current?.id || '');
@@ -1434,12 +1417,11 @@ export default function App() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     socketRef.current = io();
     const socket = socketRef.current;
 
     socket.on('connect', () => {
-<<<<<<< HEAD
       setIsSocketConnected(true);
       setMyId(socket.id || '');
     });
@@ -1483,7 +1465,7 @@ export default function App() {
       };
       setMessages(prev => [...prev.slice(-299), leaveMsg]);
       playSystemSound('leave');
-=======
+
       setMyId(socket.id || '');
     });
 
@@ -1491,7 +1473,7 @@ export default function App() {
       setRoomId(newRoomId);
       setRoomTitle(title || 'ロビー');
       setMyId(socket.id || '');
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     });
 
     socket.on('room-closed', () => {
@@ -1500,7 +1482,7 @@ export default function App() {
     });
 
     socket.on('available-rooms', (rooms: any[]) => {
-<<<<<<< HEAD
+
       setAvailableRooms(prev => {
         const newMap = new Map<string, any>();
         // 1. Existing rooms (includes Firestore metadata)
@@ -1512,9 +1494,9 @@ export default function App() {
         });
         return Array.from(newMap.values());
       });
-=======
+
       setAvailableRooms(rooms);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     });
 
     socket.on('receive-friend-request', ({ from, fromName }: { from: string, fromName: string }) => {
@@ -1524,32 +1506,32 @@ export default function App() {
 
     socket.on('friend-response-result', ({ fromName, accepted }: { fromName: string, accepted: boolean }) => {
       if (accepted) {
-<<<<<<< HEAD
+
         setMessages(prev => [...prev.slice(-299), {
           id: Math.random().toString(36).substring(7),
           senderId: 'system',
           senderName: 'システム',
-=======
+
         setMessages(prev => [...prev.slice(-100), {
           id: Math.random().toString(36).substring(7),
           senderId: 'system',
           senderName: 'System',
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           text: `${fromName}さんが友達登録を承認しました。`,
           timestamp: Date.now()
         }]);
       } else {
-<<<<<<< HEAD
+
         setMessages(prev => [...prev.slice(-299), {
           id: Math.random().toString(36).substring(7),
           senderId: 'system',
           senderName: 'システム',
-=======
+
         setMessages(prev => [...prev.slice(-100), {
           id: Math.random().toString(36).substring(7),
           senderId: 'system',
           senderName: 'System',
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           text: `${fromName}さんに友達登録が承認されませんでした。`,
           timestamp: Date.now()
         }]);
@@ -1607,20 +1589,20 @@ export default function App() {
     });
 
     socket.on('user-room-info', ({ userId, roomId: fid, title }: { userId: string, roomId: string | null, title?: string }) => {
-<<<<<<< HEAD
+
       if (fid) {
         // Use the room ID directly, title is secondary
         handleJoinRef.current(fid, 'chat');
       } else {
         const u = onlineUsers[userId] || Object.values(friends).find((f: any) => f.uid === userId);
         setFriendRoomInfoAlert({ name: u?.username || resolveUserName(userId), open: true });
-=======
+
       if (fid && title) {
         handleJoin(fid, 'chat');
       } else {
         const u = onlineUsers[userId] || friends[userId];
         setFriendRoomInfoAlert({ name: u?.username || "そのユーザー", open: true });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       }
     });
 
@@ -1631,7 +1613,7 @@ export default function App() {
     });
 
     socket.on('receive-invite', ({ from, fromName, roomId, roomTitle }: { from: string, fromName: string, roomId: string, roomTitle: string }) => {
-<<<<<<< HEAD
+
       // Create a system message and show notification
       addNotification(`${fromName}さんから「${roomTitle}」への招待が届きました。`);
       
@@ -1648,7 +1630,7 @@ export default function App() {
       if (window.confirm(`${fromName}さんから「${roomTitle}」への招待が届きました。今すぐ参加しますか？`)) {
         handleJoinRef.current(roomId, 'chat');
       }
-=======
+
       // Create a system message or notification
       addNotification(`${fromName}さんから「${roomTitle}」への招待が届きました。`);
       setMessages(prev => [...prev.slice(-100), {
@@ -1659,7 +1641,7 @@ export default function App() {
         timestamp: Date.now(),
         roomId: roomId // Special field for invitation link in message?
       }]);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     });
 
     socket.on('search-results', (results: any[]) => {
@@ -1788,11 +1770,11 @@ export default function App() {
 
   const startPrivateCallHandshake = async (targetId: string, remoteSignal?: any) => {
     try {
-<<<<<<< HEAD
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-=======
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       privateCallStreamRef.current = stream;
       
       const pc = new RTCPeerConnection(ICE_SERVERS);
@@ -1808,7 +1790,7 @@ export default function App() {
       
       pc.ontrack = (event) => {
         const remoteStream = event.streams[0];
-<<<<<<< HEAD
+
         setActiveCall(prev => prev ? { ...prev, stream: remoteStream } : { 
           peerId: targetId, 
           peerName: resolveUserName(targetId), 
@@ -1816,11 +1798,11 @@ export default function App() {
           stream: remoteStream,
           isVideo: true
         });
-=======
+
         // We'll use a hidden audio element to play it or just attach it to state if needed
         // For now, we'll rely on the fact that we can render an audio tag
         setActiveCall(prev => prev ? { ...prev } : { peerId: targetId, peerName: onlineUsers[targetId]?.username || 'User', startTime: Date.now() });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         setCallRequest(null);
         setIncomingCall(null);
       };
@@ -1880,7 +1862,7 @@ export default function App() {
   }, [incomingCall]);
 
   useEffect(() => {
-<<<<<<< HEAD
+
     if (activeCall?.stream) {
       if (remoteVideoRef.current) remoteVideoRef.current.srcObject = activeCall.stream;
       if (localVideoRef.current && privateCallStreamRef.current) {
@@ -1899,7 +1881,7 @@ export default function App() {
     // Send both trigger events: notification and actual handshake
     socketRef.current?.emit('aicha-call', { to: targetId, fromName: username });
     socketRef.current?.emit('call-handshake-request', { to: targetId, fromName: username });
-=======
+
     let interval: NodeJS.Timeout | null = null;
     if (activeCall) {
       interval = setInterval(() => {
@@ -1914,13 +1896,13 @@ export default function App() {
     setCallRequest({ to: targetId, name: onlineUsers[targetId]?.username || friends[targetId]?.username || 'User', status: 'ad' });
     setCallTimer(10);
     setMenuPosition(null);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   };
 
   const handleSendHeart = async () => {
     if (!selectedUserId) return;
     
-<<<<<<< HEAD
+
     const getJSTDateString = () => {
       return new Intl.DateTimeFormat('ja-JP', {
         timeZone: 'Asia/Tokyo',
@@ -1932,10 +1914,10 @@ export default function App() {
 
     const lastHeartDate = localStorage.getItem('last_free_heart_date');
     const today = getJSTDateString();
-=======
+
     const lastHeartDate = localStorage.getItem('last_free_heart_date');
     const today = new Date().toDateString();
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     
     if (lastHeartDate === today) {
       setShowHeartLimitModal(true);
@@ -1943,7 +1925,7 @@ export default function App() {
     }
 
     socketRef.current?.emit('send-heart', { to: selectedUserId });
-<<<<<<< HEAD
+
     
     // Increment ranking counts in Firestore if available
     try {
@@ -1979,8 +1961,8 @@ export default function App() {
       console.warn("Ranking update failed", err);
     }
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
     localStorage.setItem('last_free_heart_date', today);
     setShowHeartConfirm(false);
     addNotification("ハートを送信しました！");
@@ -2085,7 +2067,7 @@ export default function App() {
       localStream.getAudioTracks().forEach(track => {
         track.enabled = isMeSpeaker;
       });
-<<<<<<< HEAD
+
 
       // Also ensure all peer connections have our track if we just got a stream
       (Object.values(peerConnections.current) as RTCPeerConnection[]).forEach(pc => {
@@ -2095,8 +2077,8 @@ export default function App() {
           localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
         }
       });
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
     }
   }, [talkState.speakers, localStream]);
 
@@ -2104,7 +2086,7 @@ export default function App() {
     const pc = new RTCPeerConnection(ICE_SERVERS);
     peerConnections.current[targetId] = pc;
 
-<<<<<<< HEAD
+
     // Outgoing Bitrate Control for scalability
     const updateOutgoingBitrate = async () => {
       const userCount = Object.keys(peers).length + 1;
@@ -2150,8 +2132,8 @@ export default function App() {
       }
     };
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
     if (stream) {
       stream.getTracks().forEach(track => pc.addTrack(track, stream));
     }
@@ -2174,7 +2156,7 @@ export default function App() {
     // So let's revert this edit and modify where createOffer/createAnswer are called.
 
     pc.ontrack = (event) => {
-<<<<<<< HEAD
+
       setPeers(prev => {
         const existing = prev[targetId];
         if (!existing) {
@@ -2193,12 +2175,12 @@ export default function App() {
           [targetId]: { ...existing, stream: event.streams[0] }
         };
       });
-=======
+
       setPeers(prev => ({
         ...prev,
         [targetId]: { ...prev[targetId], stream: event.streams[0] }
       }));
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     };
 
     if (isInitiator) {
@@ -2222,7 +2204,7 @@ export default function App() {
     };
 
     dc.onmessage = (event) => {
-<<<<<<< HEAD
+
       const data = JSON.parse(event.data);
       if (data.type === 'video_sync') {
         const { videoId, action, currentTime } = data;
@@ -2234,10 +2216,10 @@ export default function App() {
           return [...prev, data].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
         });
       }
-=======
+
       const msg: Message = JSON.parse(event.data);
       setMessages(prev => [...prev, msg]);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     };
 
     dc.onclose = () => {
@@ -2251,7 +2233,7 @@ export default function App() {
 
   const handleJoin = async (overrideRoomId?: string, targetViewMode: 'chat' | 'messenger' = 'messenger', passkey?: string) => {
     if (!username.trim()) return;
-<<<<<<< HEAD
+
     
     // Clear chat logs when changing rooms to prevent leaks
     setMessages([]);
@@ -2298,7 +2280,7 @@ export default function App() {
           nickname: username,
           email: currentUser.email || null,
           isAnonymous: currentUser.isAnonymous,
-=======
+
 
     // Maintenance check
     if (appConfig && !appConfig.isActive && !isAdmin) {
@@ -2312,17 +2294,17 @@ export default function App() {
         await firestoreSetDoc(firestoreDoc(db, 'users', googleUser.uid), {
           nickname: username,
           email: googleUser.email,
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           updatedAt: new Date()
         }, { merge: true });
         setHasRegisteredNickname(true);
         setIsNicknameReadOnly(true);
       } catch (err) {
-<<<<<<< HEAD
+
         const wrappedError = handleFirestoreError(err, OperationType.WRITE, `users/${currentUser.uid}`);
-=======
+
         const wrappedError = handleFirestoreError(err, OperationType.WRITE, `users/${googleUser.uid}`);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         console.error("Error saving nickname:", wrappedError.message);
       }
     }
@@ -2349,7 +2331,7 @@ export default function App() {
         }
       }
 
-<<<<<<< HEAD
+
       if (!socketRef.current) {
         socketRef.current = io();
       }
@@ -2367,12 +2349,12 @@ export default function App() {
         googleUser?.uid || persistentId,
         availableRooms.find(r => r.id === targetRoom)?.title
       );
-=======
+
       if (!socketRef.current) socketRef.current = io();
       const socket = socketRef.current;
 
       socket.emit('join-room', targetRoom, username, userProfile, { status: myStatus, statusText: customStatusInput, avatar: myAvatar }, passkey, googleUser?.uid);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       setIsJoined(true);
       if (!isJoined) {
         setShowWelcome(true);
@@ -2381,10 +2363,10 @@ export default function App() {
       setShowMobileInfo(false); // Switch to messenger view on successful join
       setError(null);
       setMessages([]);
-<<<<<<< HEAD
+
       setOnlineUsers({});
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
       setPeers({});
       setTalkState({ speakers: [], queue: [], hostId: '' });
 
@@ -2404,7 +2386,7 @@ export default function App() {
       socket.off('talk-state-update');
       socket.on('talk-state-update', (state: TalkState) => {
         setTalkState(state);
-<<<<<<< HEAD
+
         // Sync Sukucha state from server room state
         if (state.sukuchaActive !== undefined) setIsSukuchaMode(state.sukuchaActive);
         if (state.sukuchaVideoId !== undefined) setSukuchaVideoId(state.sukuchaVideoId);
@@ -2417,14 +2399,14 @@ export default function App() {
             updatedAt: serverTimestamp()
           }).catch(err => console.debug("Host sync skip:", err));
         }
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
       });
 
       socket.off('heart-received');
       socket.on('heart-received', ({ from, count }: { from: string, count: number }) => {
         setHearts(prev => ({ ...prev, [socketRef.current?.id || '']: count }));
-<<<<<<< HEAD
+
         // Add system message
         const sysMsg: Message = {
           id: 'sys-heart-' + Date.now(),
@@ -2434,8 +2416,8 @@ export default function App() {
           timestamp: Date.now()
         };
         setMessages(prev => [...prev.slice(-299), sysMsg]);
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
       });
 
       socket.on('room-waiting', ({ roomId: rid, position }: { roomId: string, position: number }) => {
@@ -2455,7 +2437,7 @@ export default function App() {
         setHearts(prev => ({ ...prev, [userId]: count }));
       });
 
-<<<<<<< HEAD
+
       socket.off('sukucha-toggle');
       socket.on('sukucha-toggle', ({ active }: { active: boolean }) => {
         setIsSukuchaMode(active);
@@ -2568,7 +2550,7 @@ export default function App() {
         // If they click "Open", we make sure the dialog is visible (it usually is if incomingFileRequest is set)
       }, '確認');
     });
-=======
+
       socket.off('private-message');
       socket.on('private-message', (msg: Message) => {
         setPrivateMessages(prev => {
@@ -2585,7 +2567,7 @@ export default function App() {
         setIncomingFileRequest(transfer);
         setFileRequestTimer(10);
       });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 
       socket.off('file-response');
       socket.on('file-response', ({ transferId, accepted }: { transferId: string, accepted: boolean }) => {
@@ -2610,7 +2592,7 @@ export default function App() {
       socket.off('file-complete');
       socket.on('file-complete', ({ transferId, url }: { transferId: string, url?: string }) => {
         setFileTransfers(prev => prev.map(t => t.id === transferId ? { ...t, progress: 100, status: 'completed', url } : t));
-<<<<<<< HEAD
+
         if (url) {
           const a = document.createElement('a');
           a.href = url;
@@ -2621,11 +2603,11 @@ export default function App() {
           a.click();
           document.body.removeChild(a);
           addNotification("ファイルがダウンロードされました。");
-=======
+
         // Notification for receiver
         if (incomingFileRequest?.id === transferId || fileTransfers.find(t => t.id === transferId)?.receiverId === myId) {
            // Receiver gets alert
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         }
       });
 
@@ -2685,22 +2667,22 @@ export default function App() {
       });
 
       socket.off('room-users');
-<<<<<<< HEAD
+
     socket.on('room-users', (users: any[]) => {
         const nextInfo: Record<string, { username: string, profile: string, status?: string, statusText?: string, avatar?: string, uid?: string }> = {};
         const nextPeers: Record<string, Peer> = {};
         
-=======
+
       socket.on('room-users', async (users: any[]) => {
         const nextInfo: Record<string, { username: string, profile: string, status?: string, statusText?: string, avatar?: string }> = {};
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         for (const u of users) {
           nextInfo[u.userId] = { 
             username: u.username, 
             profile: u.profile, 
             status: u.status || 'online',
             statusText: u.statusText || '',
-<<<<<<< HEAD
+
             avatar: u.avatar || '',
             uid: u.uid
           };
@@ -2753,7 +2735,7 @@ export default function App() {
 
       socket.off('user-joined');
     socket.on('user-joined', ({ userId, username: otherName, profile, status, statusText, avatar, uid }) => {
-=======
+
             avatar: u.avatar || ''
           };
           const pc = createPeerConnection(u.userId, true, stream);
@@ -2774,7 +2756,7 @@ export default function App() {
 
       socket.off('user-joined');
       socket.on('user-joined', ({ userId, username: otherName, profile, status, statusText, avatar }) => {
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         setOnlineUsers(prev => ({ 
           ...prev, 
           [userId]: { 
@@ -2782,7 +2764,7 @@ export default function App() {
             profile, 
             status: status || 'online', 
             statusText: statusText || '',
-<<<<<<< HEAD
+
             avatar: avatar || '',
             uid
           } 
@@ -2797,12 +2779,12 @@ export default function App() {
           } 
         }));
         // We don't initiate here, the joining user will initiate
-=======
+
             avatar: avatar || ''
           } 
         }));
         setPeers(prev => ({ ...prev, [userId]: { id: userId, username: otherName, dataChannel: null, stream: null } }));
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       });
 
       socket.on('user-updated', ({ userId, username: otherName, profile, status, statusText, avatar }) => {
@@ -2936,24 +2918,24 @@ export default function App() {
     socketRef.current?.emit('file-response', { to: incomingFileRequest.senderId, transferId: incomingFileRequest.id, accepted });
     
     if (accepted) {
-<<<<<<< HEAD
+
       const newTransfer: FileTransfer = { ...incomingFileRequest, status: 'transferring', progress: 0 };
       setFileTransfers(prev => [newTransfer, ...prev]);
       // Use Timeout to ensure state has a chance to update or pass the object directly
       setTimeout(() => simulateTransfer(newTransfer.id), 100);
-=======
+
       const newTransfer = { ...incomingFileRequest, status: 'transferring' as const, progress: 0 };
       setFileTransfers(prev => [newTransfer, ...prev]);
       // Start simulated progress for demo purposes
       simulateTransfer(newTransfer.id);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     }
     
     setIncomingFileRequest(null);
   };
 
   const simulateTransfer = (transferId: string) => {
-<<<<<<< HEAD
+
     // We need to be careful with stale state here. 
     // Instead of finding it once, we'll use a local mock since we know the details.
     
@@ -2993,7 +2975,7 @@ export default function App() {
         });
       }
     }, 600);
-=======
+
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 15;
@@ -3015,7 +2997,7 @@ export default function App() {
         setFileTransfers(prev => prev.map(t => t.id === transferId ? { ...t, progress } : t));
       }
     }, 800);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   };
 
   const cancelTransfer = (transferId: string) => {
@@ -3024,7 +3006,7 @@ export default function App() {
   };
 
   const handleOpenFile = (transfer: FileTransfer) => {
-<<<<<<< HEAD
+
     if (transfer.url) {
       // Trigger actual browser download
       const link = document.createElement('a');
@@ -3292,7 +3274,7 @@ export default function App() {
         console.warn("Firestore sync backup failed:", wrappedError.message);
       }
     }
-=======
+
     alert(`ファイル「${transfer.name}」を開きます（デモ：機能制限）`);
   };
 
@@ -3316,7 +3298,7 @@ export default function App() {
 
     setMessages(prev => [...prev, newMessage]);
     setInputText('');
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
   };
 
   const handleInitiatePrivateChat = () => {
@@ -3393,7 +3375,7 @@ export default function App() {
       fromName: username,
     });
 
-<<<<<<< HEAD
+
     setPrivateMessages(prev => {
       const current = prev[targetId] || [];
       // Ensure we don't add the same message twice
@@ -3403,8 +3385,8 @@ export default function App() {
 
     setPrivateInput('');
 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
     if (targetId === 'test-user-aicha') {
       const systemInstruction = appConfig?.systemBehavior || "あなたは「あいちゃ」という名前の明るくフレンドリーなAIアシスタントです。ユーザーと楽しくおしゃべりしてください。";
       getAiChaResponse(privateInput, systemInstruction).then(reply => {
@@ -3417,23 +3399,23 @@ export default function App() {
         };
         setPrivateMessages(prev => {
           const current = prev['test-user-aicha'] || [];
-<<<<<<< HEAD
+
           if (current.some(m => m.id === replyMessage.id)) return prev;
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
           return { ...prev, ['test-user-aicha']: [...current, replyMessage] };
         });
         playKiranSound(appConfig?.jingleUrl);
       });
     }
 
-<<<<<<< HEAD
-=======
+
+
     setPrivateMessages(prev => {
       const current = prev[targetId] || [];
       return { ...prev, [targetId]: [...current, newMessage] };
     });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     setPrivateInput('');
   };
 
@@ -3470,41 +3452,41 @@ export default function App() {
     socketRef.current?.emit('get-user-hearts', userId);
   };
 
-<<<<<<< HEAD
+
   const toggleBlock = (targetId: string) => {
     const uid = getTargetUid(targetId);
     setBlockedUsers(prev => {
       const next = new Set(prev);
       if (next.has(uid)) next.delete(uid);
       else next.add(uid);
-=======
+
   const toggleBlock = (userId: string) => {
     setBlockedUsers(prev => {
       const next = new Set(prev);
       if (next.has(userId)) next.delete(userId);
       else next.add(userId);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       return next;
     });
   };
 
-<<<<<<< HEAD
+
   const handleRemoveFriend = (id: string) => {
     const uid = getTargetUid(id);
     const friend = friends[uid];
-=======
+
   const handleRemoveFriend = (userId: string) => {
     const friend = friends[userId];
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     const name = friend?.username || "このユーザー";
     if (confirm(`本当に${name}さんを友達から解除しますか？`)) {
       setFriends(prev => {
         const next = { ...prev };
-<<<<<<< HEAD
+
         delete next[uid];
-=======
+
         delete next[userId];
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         return next;
       });
       addNotification(`${name}さんを解除しました。`);
@@ -3514,17 +3496,17 @@ export default function App() {
   };
 
   const handleJoinFriendRoom = (targetId: string) => {
-<<<<<<< HEAD
+
     const targetSocketId = getTargetSocketId(targetId);
     socketRef.current?.emit('get-user-room', targetSocketId);
-=======
+
     socketRef.current?.emit('get-user-room', targetId);
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     setMenuPosition(null);
     setSelectedUserId(null);
   };
 
-<<<<<<< HEAD
+
   const playSystemSound = (type: 'join' | 'leave' | 'login' | 'logout' | 'cracker') => {
     if (soundLevel === 'off') return;
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -3596,9 +3578,9 @@ export default function App() {
     } catch (e) {
       console.error("Sign out error", e);
     }
-=======
+
   const handleLogout = () => {
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     socketRef.current?.disconnect();
     socketRef.current = null;
     localStream?.getTracks().forEach(t => t.stop());
@@ -3607,15 +3589,15 @@ export default function App() {
     setMessages([]);
     peerConnections.current = {};
     setLocalStream(null);
-<<<<<<< HEAD
+
     setUsername('');
     setHasRegisteredNickname(false);
     setLoginStep(1);
     setShowLanding(true);
     // Force reload to be absolutely sure everything is reset
     window.location.reload();
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
   };
 
   const handleLeaveRoom = () => {
@@ -3631,7 +3613,7 @@ export default function App() {
     }
   };
 
-<<<<<<< HEAD
+
   const handleCreateRoom = async (e: FormEvent) => {
     e.preventDefault();
     if (!createRoomForm.title.trim()) return;
@@ -3654,24 +3636,24 @@ export default function App() {
       }
     }
 
-=======
+
   const handleCreateRoom = (e: FormEvent) => {
     e.preventDefault();
     if (!createRoomForm.title.trim()) return;
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     socketRef.current?.emit('create-room', {
       title: createRoomForm.title,
       description: createRoomForm.description,
       isPrivate: createRoomForm.isPrivate,
-<<<<<<< HEAD
+
       passkey: createRoomForm.passkey,
       roomId: newRoomId // Pass the ID we generated
     });
     
-=======
+
       passkey: createRoomForm.passkey
     });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     setShowCreateRoomDialog(false);
     setCreateRoomForm({ title: '', description: '', isPrivate: false, passkey: '' });
   };
@@ -3679,7 +3661,7 @@ export default function App() {
   // Helper to render hidden audio elements for peer streams
   const renderPeerAudios = () => {
     return (Object.entries(peers) as [string, Peer][]).map(([id, peer]) => {
-<<<<<<< HEAD
+
       if (id === socketRef.current?.id) return null;
       if (!peer.stream) return null;
       const user = onlineUsers[id];
@@ -3694,7 +3676,7 @@ export default function App() {
           />
         </React.Fragment>
       );
-=======
+
       if (peer.stream && talkState.speakers.includes(id) && !blockedUsers.has(id)) {
         return (
           <audio
@@ -3707,7 +3689,7 @@ export default function App() {
         );
       }
       return null;
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     });
   };
 
@@ -3734,11 +3716,11 @@ export default function App() {
         <header className={cn(tc.titleBar, "flex items-center justify-between text-white shrink-0")}>
           <div className="flex items-center gap-2 p-1">
             <MessageSquare className="w-3 h-3" />
-<<<<<<< HEAD
+
             <span className="font-bold truncate max-w-[100px] sm:max-w-none">あいちゃ2.0 - [{roomTitle}]</span>
-=======
+
             <span className="font-bold">あいちゃ2.0 - [{roomTitle}]</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             <div className="flex items-center gap-1.5 ml-2 border-l border-white/30 pl-2">
               <span className="text-[10px] bg-white/20 px-1 rounded flex items-center gap-1">
                 <Users className="w-2.5 h-2.5" />
@@ -3748,7 +3730,7 @@ export default function App() {
                 "text-[9px] px-1 rounded flex items-center gap-1",
                 (Object.keys(onlineUsers).length > 10 || dataSaverMode) ? "bg-red-500/40" : "bg-green-500/40"
               )}>
-<<<<<<< HEAD
+
                 <Heart className="w-2.5 h-2.5" />
                 {(dataSaverMode || Object.keys(onlineUsers).length > 10) ? (dataSaverMode ? "節約(手動)" : "節約(自動)") : "標準"}
               </span>
@@ -3756,22 +3738,22 @@ export default function App() {
                 <div className={cn("w-1.5 h-1.5 rounded-full animate-pulse", isFirebaseConnected ? "bg-blue-400" : "bg-red-500")} />
                 <span className="text-[8px] font-black">{isFirebaseConnected ? "SYNCED" : "OFFLINE"}</span>
               </div>
-=======
+
                 <Zap className="w-2.5 h-2.5" />
                 {dataSaverMode ? "制限(手動)" : (Object.keys(onlineUsers).length > 10 ? "低帯域(自動)" : "標準")}
               </span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             </div>
           </div>
           <div className="flex gap-1 pr-1">
             <div className={cn(tc.btn, "text-white text-[10px] w-4 h-4 px-0 flex items-center justify-center border-0 shadow-none")}>_</div>
             <div className={cn(tc.btn, "text-white text-[10px] w-4 h-4 px-0 flex items-center justify-center border-0 shadow-none")}>□</div>
             <button 
-<<<<<<< HEAD
+
               onClick={() => setShowLogoutConfirm(true)}
-=======
+
               onClick={() => handleLogout()} 
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               className={cn(tc.btn, "text-white text-[10px] w-4 h-4 px-0 border-0 shadow-none")}
             >
               ×
@@ -3780,11 +3762,11 @@ export default function App() {
         </header>
 
         {/* Menu Bar */}
-<<<<<<< HEAD
+
             <div className={cn(tc.bg, "flex border-b p-0.5 gap-0.5 shrink-0 shadow-sm overflow-x-auto no-scrollbar", theme === 'classic95' ? "border-[#808080]" : "border-white/10")}>
-=======
+
         <div className={cn(tc.bg, "flex border-b p-0.5 gap-0.5 shrink-0 shadow-sm", theme === 'classic95' ? "border-[#808080]" : "border-white/10")}>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           <button 
             onClick={() => setViewMode('messenger')}
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
@@ -3794,17 +3776,17 @@ export default function App() {
           </button>
           <button 
             onClick={() => setShowRoomListExplorer(true)}
-<<<<<<< HEAD
+
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[65px] group whitespace-nowrap", tc.toolbarBtn)}
-=======
+
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           >
             <List className={cn("w-4 h-4 mb-0.5 group-hover:text-current", tc.secondaryText)} />
             <span className={cn("text-[9px] font-bold group-hover:text-current", tc.secondaryText)}>ルーム一覧</span>
           </button>
           <button 
-<<<<<<< HEAD
+
             onClick={() => setShowInviteModal(true)}
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
           >
@@ -3825,13 +3807,13 @@ export default function App() {
           >
             <Video className={cn("w-4 h-4 mb-0.5 group-hover:text-current", isSukuchaMode ? "text-orange-600" : tc.secondaryText)} />
             <span className={cn("text-[9px] font-bold group-hover:text-current whitespace-nowrap", isSukuchaMode ? "text-orange-600" : tc.secondaryText)}>すくちゃ！</span>
-=======
+
             onClick={() => setIsSearchingFriends(true)}
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
           >
             <Users className={cn("w-4 h-4 mb-0.5 group-hover:text-current", tc.secondaryText)} />
             <span className={cn("text-[9px] font-bold group-hover:text-current", tc.secondaryText)}>友達検索</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           </button>
           <button 
             onClick={() => setShowSettings(true)}
@@ -3841,8 +3823,8 @@ export default function App() {
             <span className={cn("text-[9px] font-bold group-hover:text-current", tc.secondaryText)}>設定</span>
           </button>
           <button 
-<<<<<<< HEAD
-=======
+
+
             onClick={() => setShowInviteModal(true)}
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
           >
@@ -3850,7 +3832,7 @@ export default function App() {
             <span className={cn("text-[9px] font-bold group-hover:text-current", tc.secondaryText)}>招待</span>
           </button>
           <button 
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             onClick={handleLeaveRoom}
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
           >
@@ -3866,7 +3848,7 @@ export default function App() {
               <span className={cn("text-[9px] font-bold group-hover:text-current", tc.secondaryText)}>管理</span>
             </button>
           )}
-<<<<<<< HEAD
+
         </div>
 
         <div className={cn("flex-1 flex flex-col overflow-hidden relative w-full pt-1.5 md:pt-1")}>
@@ -4396,7 +4378,7 @@ export default function App() {
                   disabled={!inputText.trim()}
                 >
                   送信
-=======
+
           <button 
             onClick={handleLogout}
             className={cn("flex flex-col items-center justify-center px-1.5 py-0.5 min-w-[55px] group", tc.toolbarBtn)}
@@ -4518,14 +4500,14 @@ export default function App() {
                   )}
                 >
                   {isSpeaking ? "離す" : isInQueue ? "取消" : "話す"}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                 </button>
               </div>
             </div>
 
-<<<<<<< HEAD
+
           </div>
-=======
+
             <div className={cn("p-1 flex gap-1 shrink-0", theme === 'classic95' ? "win-border" : (theme === 'cute' ? "rounded-3xl border-2 border-[#ffcad4] bg-[#fff5f6]" : "rounded-xl border border-white/10 bg-black/20"))}>
               <input 
                 className={cn("flex-1 px-3 py-1.5 text-xs outline-none focus:ring-1", theme === 'classic95' ? "win-inset focus:ring-[#000080]" : tc.inset + " focus:ring-[#ff85a1]")}
@@ -4601,7 +4583,7 @@ export default function App() {
                <span className="opacity-70">ルーム: {roomId}</span>
             </div>
           </aside>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         </div>
       </motion.div>
     );
@@ -4609,7 +4591,7 @@ export default function App() {
 
   const renderRoomList = (onJoin: (room: { id: string, title: string, description: string, isPrivate?: boolean }) => void) => {
     const tc = THEME_CONFIG[theme];
-<<<<<<< HEAD
+
     
     // 検索フィルタリング
     const filteredRooms = availableRooms.filter(room => 
@@ -4640,7 +4622,7 @@ export default function App() {
           </div>
         </div>
         {filteredRooms.map((room) => (
-=======
+
     return (
       <div className={cn("divide-y", theme === 'cool' ? "divide-slate-700" : "divide-gray-200")}>
         <div className={cn("p-2 text-[10px] font-bold border-b flex justify-between items-center", tc.subHeader, tc.subHeaderText)}>
@@ -4648,7 +4630,7 @@ export default function App() {
           <Users className="w-3 h-3 opacity-50" />
         </div>
         {availableRooms.map((room) => (
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           <div 
             key={room.id}
             onClick={() => onJoin(room)}
@@ -4703,7 +4685,7 @@ export default function App() {
     if (!isEditingConfig) return null;
     const tc = THEME_CONFIG[theme];
     
-<<<<<<< HEAD
+
     return (
       <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className={cn("w-full max-w-sm shadow-2xl overflow-hidden rounded-xl animate-in zoom-in-95", tc.border, tc.bg)}>
@@ -4711,7 +4693,7 @@ export default function App() {
               <div className="flex items-center gap-2 text-white">
                  <Shield className="w-4 h-4" />
                  <span className="text-sm font-bold">システム管理</span>
-=======
+
     const AdminInput = ({ label, value, onSave, textarea = false, showPreviewBtn = false, onPreview = () => {} }: { label: string, value: string, onSave: (v: string) => void, textarea?: boolean, showPreviewBtn?: boolean, onPreview?: () => void }) => {
       const [localVal, setLocalVal] = useState(value || '');
       
@@ -4875,7 +4857,7 @@ export default function App() {
               <div className="flex items-center gap-2 text-white">
                  <Shield className="w-4 h-4" />
                  <span className="text-sm font-bold">システム管理コンソール</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               </div>
               <button 
                 onClick={() => setIsEditingConfig(false)} 
@@ -4885,7 +4867,7 @@ export default function App() {
               </button>
             </div>
             
-<<<<<<< HEAD
+
             <div className="p-6 space-y-6">
                <section className="space-y-4">
                  <div className="flex items-center gap-2 border-b border-black/5 pb-2">
@@ -5029,7 +5011,7 @@ export default function App() {
             </button>
           </div>
         </motion.div>
-=======
+
             <div className="flex-1 overflow-y-auto no-scrollbar">
               <div className="p-6 space-y-8 pb-12">
                  <section className="space-y-4">
@@ -5180,14 +5162,14 @@ export default function App() {
           </div>
           {showDeployHelp && <DeployHelpModal />}
           {showVisualPreview && <VisualPreviewModal />}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       </div>
     );
   };
 
   const WelcomeContent = ({ showStartButton = true }: { showStartButton?: boolean }) => {
     const tc = THEME_CONFIG[theme];
-<<<<<<< HEAD
+
     const [welcomeTab, setWelcomeTab] = useState<'main' | 'features' | 'ranking'>('main');
     const [monthlyRanking, setMonthlyRanking] = useState<any[]>([]);
     const [annualRanking, setAnnualRanking] = useState<any[]>([]);
@@ -5419,7 +5401,7 @@ export default function App() {
               </div>
             </div>
           )}
-=======
+
     
     const welcomeTitle = (appConfig?.welcomeTitle || "ようこそ、{username}さん！").replace("{username}", username);
     const welcomeSubtitle = appConfig?.welcomeSubtitle || "あいちゃ2.0へボイスチャットとメッセンジャーの世界へ";
@@ -5480,7 +5462,7 @@ export default function App() {
               </div>
             </div>
           </div>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 
           <div className={cn("p-4 text-[11px] text-center italic rounded", tc.subHeader, tc.subHeaderText)}>
             ※マナーを守って楽しくお話ししましょう！
@@ -5497,12 +5479,12 @@ export default function App() {
               }}
               className={cn("w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-95", tc.btn)}
             >
-<<<<<<< HEAD
+
               閉じる
-=======
+
               はじめる！
               <ChevronRight className="w-5 h-5" />
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             </button>
           </div>
         )}
@@ -5518,14 +5500,14 @@ export default function App() {
           <div className={cn("flex justify-between items-center pl-2 pr-1 py-1 min-h-[32px] shrink-0", tc.titleBar)}>
             <span className="text-white text-[12px] font-bold px-1 truncate">ウェルカム - あいちゃ2.0</span>
             <button 
-<<<<<<< HEAD
+
               onClick={() => { 
                 setShowWelcome(false);
                 setShowMobileInfo(false);
               }} 
-=======
+
               onClick={() => setShowWelcome(false)} 
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               className={cn("w-6 h-6 flex items-center justify-center text-xs font-bold", tc.btn)}
             >
               ×
@@ -5551,17 +5533,17 @@ export default function App() {
               ) : (
                 <span className="text-[20px]">😉</span>
               )}
-<<<<<<< HEAD
+
               <span className="font-bold">あいちゃ メッセンジャー</span>
-=======
+
               <span className="font-bold">あいちゃ ﾒｯｾﾝｼﾞｬｰ</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             </div>
           </div>
 
           <div className={cn(tc.bg, "flex border-b border-[#808080] p-0.5 gap-0.5 shadow-sm overflow-hidden whitespace-nowrap")}>
             <button 
-<<<<<<< HEAD
+
               onClick={() => {
                 setShowWelcome(true);
                 if (window.innerWidth < 1024) setShowMobileInfo(true);
@@ -5583,7 +5565,7 @@ export default function App() {
                 setShowMobileInfo(false);
                 setShowRoomListExplorer(true);
               }}
-=======
+
               className={cn(
                 "flex-1 flex flex-col items-center justify-center py-0.5 group transition-colors",
                 tc.toolbarBtn,
@@ -5595,7 +5577,7 @@ export default function App() {
             </button>
             <button 
               onClick={() => setShowRoomListExplorer(true)}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               className={cn("flex-1 flex flex-col items-center justify-center py-0.5 group transition-colors", tc.toolbarBtn)}
             >
               <MessageSquare className="w-4 h-4 mb-0.5 text-gray-500 group-hover:text-current" />
@@ -5629,7 +5611,7 @@ export default function App() {
               <Settings className="w-4 h-4 mb-0.5 text-gray-500 group-hover:text-current" />
               <span className="text-[9px] font-bold text-gray-500 group-hover:text-current">設定</span>
             </button>
-<<<<<<< HEAD
+
             <button 
               onClick={() => setShowLogoutConfirm(true)}
               className={cn("flex-1 flex flex-col items-center justify-center py-0.5 group transition-colors", tc.toolbarBtn)}
@@ -5637,8 +5619,8 @@ export default function App() {
               <LogOut className="w-4 h-4 mb-0.5 text-red-500 group-hover:text-current" />
               <span className="text-[9px] font-bold text-red-500 group-hover:text-current">ログアウト</span>
             </button>
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
             {isAdmin && (
               <button 
                 onClick={() => setIsEditingConfig(true)}
@@ -5648,8 +5630,8 @@ export default function App() {
                 <span className="text-[9px] font-bold text-pink-500 group-hover:text-current">管理</span>
               </button>
             )}
-<<<<<<< HEAD
-=======
+
+
             <button 
               onClick={handleLogout}
               className={cn("flex-1 flex flex-col items-center justify-center py-0.5 group transition-colors", tc.toolbarBtn)}
@@ -5657,7 +5639,7 @@ export default function App() {
               <LogOut className="w-4 h-4 mb-0.5 text-red-500 group-hover:text-current" />
               <span className="text-[9px] font-bold text-red-500 group-hover:text-current">ログアウト</span>
             </button>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           </div>
 
           <div className="flex-1 overflow-hidden p-2 flex flex-col gap-2">
@@ -5726,11 +5708,11 @@ export default function App() {
 
                 <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
                   <ScrollArea className="flex-1 min-h-0">
-<<<<<<< HEAD
+
                     <div className="space-y-4 pr-3 pb-20 pt-2">
-=======
+
                     <div className="space-y-4 pr-3 pb-20">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       <div className="space-y-1">
                         <div className={cn("flex items-center gap-2 font-bold text-[11px] p-1 border-l-2", tc.subHeader, tc.subHeaderText)}>
                           <Users className="w-3 h-3" />
@@ -5738,7 +5720,7 @@ export default function App() {
                         </div>
                         <div className="space-y-1">
                           {Object.entries(onlineUsers)
-<<<<<<< HEAD
+
                             .filter(([id]) => id === myId || onlineUsers[id]?.status !== 'hidden')
                             .map(([id, user]: [string, any]) => (
                             <div key={id} onClick={(e) => handleUserClick(e, id)} className={cn("flex items-center justify-between p-1.5 cursor-pointer group rounded relative", tc.itemHover)}>
@@ -5763,7 +5745,7 @@ export default function App() {
                                     <span className="text-[10px]">{STATUS_OPTIONS.find(s => s.id === (user.status || 'online'))?.icon}</span>
                                     <span className={cn("text-[9px] font-bold truncate", user.status === 'away' ? "text-gray-400" : "text-green-600")}>
                                       {user.status === 'custom' ? user.statusText : (STATUS_OPTIONS.find(s => s.id === (user.status || 'online'))?.label || 'オンライン')}
-=======
+
                             .filter(([id]) => id === myId || onlineUsers[id].status !== 'hidden')
                             .map(([id, user]: [string, any]) => (
                             <div key={id} onClick={(e) => handleUserClick(e, id)} className={cn("flex items-center justify-between p-1.5 cursor-pointer group rounded", tc.itemHover)}>
@@ -5777,7 +5759,7 @@ export default function App() {
                                     <span className="text-[10px]">{STATUS_OPTIONS.find(s => s.id === (user.status || 'online'))?.icon}</span>
                                     <span className={cn("text-[9px] font-bold truncate", user.status === 'away' ? "text-gray-400" : "text-green-600")}>
                                       {user.status === 'custom' ? user.statusText : (STATUS_OPTIONS.find(s => s.id === (user.status || 'online'))?.label || 'Online')}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                                     </span>
                                   </div>
                                 </div>
@@ -5787,16 +5769,16 @@ export default function App() {
                         </div>
                       </div>
 
-<<<<<<< HEAD
+
                       <div className="space-y-1 pt-4">
-=======
+
                       <div className="space-y-1 pt-2">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                         <div className={cn("flex items-center gap-2 font-bold text-[11px] p-1 border-l-2 opacity-50", tc.subHeader, tc.secondaryText)}>
                           <UserX className="w-3 h-3" /> オフライン
                         </div>
                         {Object.entries(friends).filter(([id]) => !onlineUsers[id]).map(([id, friend]: [string, any]) => (
-<<<<<<< HEAD
+
                           <div key={id} onClick={(e) => handleUserClick(e, id)} className={cn("flex items-center justify-between p-1.5 opacity-60 grayscale-[0.5] hover:opacity-100 cursor-pointer group relative", tc.itemHover)}>
                             <div className="flex items-center gap-2 min-w-0">
                               <div className="w-8 h-8 rounded-full bg-gray-200 win-inset flex items-center justify-center shrink-0 relative overflow-hidden">
@@ -5804,12 +5786,12 @@ export default function App() {
                                 {unreadPrivateMessages.has(id) && (
                                   <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white z-10" />
                                 )}
-=======
+
                           <div key={id} onClick={(e) => handleUserClick(e, id)} className={cn("flex items-center justify-between p-1.5 opacity-60 grayscale-[0.5] hover:opacity-100 cursor-pointer group", tc.itemHover)}>
                             <div className="flex items-center gap-2">
                               <div className="w-8 h-8 bg-gray-200 win-inset flex items-center justify-center shrink-0">
                                 <User className="w-4 h-4 text-gray-400" />
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                               </div>
                               <div className="min-w-0">
                                 <div className={cn("font-bold text-[11px] truncate", tc.text)}>{friend.username}</div>
@@ -5826,16 +5808,16 @@ export default function App() {
           </div>
 
           <div className={cn("p-2 border-t border-[#808080] text-[10px] flex justify-between shrink-0", tc.bg, tc.text)}>
-<<<<<<< HEAD
+
             <div className="flex items-center gap-2">
               <div className={cn("w-1.5 h-1.5 rounded-full", isSocketConnected ? "bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]" : "bg-red-500 animate-pulse")} />
               <span className="opacity-70">ユーザーID: {myId} {isSocketConnected ? "(オンライン)" : "(オフライン)"}</span>
             </div>
             <span className="opacity-70 font-mono text-[9px]">V2.0.5 - {isFirebaseConnected ? "CLOUD READY" : "LOCAL MODE"}</span>
-=======
+
             <span className="opacity-70">ユーザーID: {myId}</span>
             <span className="opacity-70 font-mono">V2.0.4 - READY</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           </div>
       </div>
     );
@@ -5845,15 +5827,15 @@ export default function App() {
     if (showLanding) {
       return <LandingPage onStart={() => setShowLanding(false)} />;
     }
-<<<<<<< HEAD
+
     return (
       <>
         <div className={cn("min-h-screen flex items-center justify-center p-4 font-sans text-sm transition-colors duration-500 overflow-hidden relative", theme === 'cute' ? "bg-[#fff5f8]" : (theme === 'classic95' ? "bg-[#c0c0c8]" : tc.bg))}>
-=======
+
     const tc = THEME_CONFIG[theme];
     return (
       <div className={cn("min-h-screen flex items-center justify-center p-4 font-sans text-sm transition-colors duration-500 overflow-hidden relative", theme === 'cute' ? "bg-[#fff5f8]" : (theme === 'classic95' ? "bg-[#c0c0c8]" : tc.bg))}>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
         {/* Animated Background Bubbles for Cute Theme */}
         {theme === 'cute' && (
           <div className="absolute inset-0 pointer-events-none">
@@ -5873,15 +5855,15 @@ export default function App() {
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-<<<<<<< HEAD
+
           className={cn("w-full max-w-sm shadow-[0_40px_100px_-15px_rgba(0,0,0,0.1)] overflow-hidden relative z-10 flex flex-col max-h-[95dvh] sm:max-h-[90vh]", theme === 'cute' ? "rounded-[1.5rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white bg-white" : tc.border + " " + tc.bg)}
         >
           <div className={cn("p-4 sm:p-10 text-center relative overflow-hidden shrink-0", theme === 'cute' ? "bg-gradient-to-br from-[#ff85a1] to-[#ffb7c5]" : "bg-gradient-to-r from-[#000080] to-[#0000ff]")}>
-=======
+
           className={cn("w-full max-w-sm shadow-[0_40px_100px_-15px_rgba(0,0,0,0.1)] overflow-hidden relative z-10", theme === 'cute' ? "rounded-[2.5rem] border-4 border-white bg-white" : tc.border + " " + tc.bg)}
         >
           <div className={cn("p-10 text-center relative overflow-hidden", theme === 'cute' ? "bg-gradient-to-br from-[#ff85a1] to-[#ffb7c5]" : "bg-gradient-to-r from-[#000080] to-[#0000ff]")}>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
              <button 
                onClick={() => setShowAdminLogin(!showAdminLogin)}
                className="absolute top-2 right-2 p-1 text-white/20 hover:text-white/50 transition-colors"
@@ -5889,7 +5871,7 @@ export default function App() {
                <Settings className="w-3 h-3" />
              </button>
              <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
-<<<<<<< HEAD
+
              <div className="flex justify-center mb-1 sm:mb-3">
                 <motion.div 
                   animate={{ scale: [1, 1.05, 1] }}
@@ -5967,7 +5949,7 @@ export default function App() {
                     </div>
                     <p className="text-[9px] sm:text-[10px] font-bold text-amber-800 text-center">
                       {appConfig.maintenanceMessage || "現在メンテナンス中です。"}
-=======
+
              <div className="flex justify-center mb-3">
                 <motion.div 
                   animate={{ scale: [1, 1.05, 1] }}
@@ -5997,12 +5979,12 @@ export default function App() {
                     </div>
                     <p className="text-[10px] font-bold text-amber-800 text-center">
                       {appConfig.maintenanceMessage || "現在メンテナンス中です。しばらくお待ちください。"}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                     </p>
                   </div>
                 )}
 
-<<<<<<< HEAD
+
                 <div className="w-full space-y-3 sm:space-y-4">
                   {googleUser && isAdmin && (
                     <div className="bg-blue-50 border border-blue-100 p-3 rounded-xl flex items-center gap-3">
@@ -6063,7 +6045,7 @@ export default function App() {
                   <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 animate-pulse">
                     <Clock className="w-3 h-3" />
                     読み込み中...
-=======
+
                 <button 
                   onClick={handleGoogleLogin}
                   disabled={isAuthLoading}
@@ -6079,7 +6061,7 @@ export default function App() {
                   <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 animate-pulse">
                     <Clock className="w-3 h-3" />
                     認証状態を確認中...
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                   </div>
                 )}
               </div>
@@ -6096,11 +6078,11 @@ export default function App() {
                       ) : (
                         <div className="text-center">
                           <UserCircle className={cn("w-12 h-12 mx-auto opacity-20", tc.text)} />
-<<<<<<< HEAD
+
                         <span className="text-[10px] font-black uppercase tracking-widest opacity-40 text-slate-400">アバター画像</span>
-=======
+
                           <span className="text-[8px] font-bold opacity-30 mt-1 block uppercase tracking-widest text-slate-400">Photo</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                         </div>
                       )}
                     </div>
@@ -6137,11 +6119,11 @@ export default function App() {
                 <div className="space-y-5">
                   <div className="space-y-1.5">
                     <div className="flex justify-between items-end px-1">
-<<<<<<< HEAD
+
                       <label className={cn("text-[10px] font-black uppercase tracking-wider opacity-60", tc.text)}>ニックネーム</label>
-=======
+
                       <label className={cn("text-[10px] font-black uppercase tracking-wider opacity-60", tc.text)}>Nickname</label>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       {isNicknameReadOnly && <span className="text-[9px] text-gray-400 font-bold">● 登録済み</span>}
                     </div>
                     <input 
@@ -6149,11 +6131,11 @@ export default function App() {
                       value={username}
                       onChange={(e) => !isNicknameReadOnly && setUsername(e.target.value)}
                       readOnly={isNicknameReadOnly}
-<<<<<<< HEAD
+
                       className={cn("w-full px-4 py-3 text-sm outline-none font-bold rounded-2xl transition-all text-black", tc.inset, "bg-white", isNicknameReadOnly && "opacity-60 bg-gray-50 cursor-not-allowed")}
-=======
+
                       className={cn("w-full px-4 py-3 text-sm outline-none font-bold rounded-2xl transition-all", tc.inset, theme === 'cute' ? "bg-pink-50/50 focus:bg-white focus:ring-2 focus:ring-pink-200" : "bg-white/10", isNicknameReadOnly && "opacity-60 bg-gray-50 cursor-not-allowed")}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       onKeyDown={(e) => e.key === 'Enter' && handleJoin("lobby-request")}
                       autoFocus={!isNicknameReadOnly}
                     />
@@ -6185,7 +6167,7 @@ export default function App() {
           <div className={cn("flex flex-wrap items-center justify-center gap-4 text-[9px] font-black tracking-widest opacity-40 uppercase", tc.text)}>
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-<<<<<<< HEAD
+
                 接続完了
               </span>
               <span>v2.0.6 - 安全な認証</span>
@@ -6203,7 +6185,7 @@ export default function App() {
 
 // Maintenance screen
   if (appConfig && appConfig.isActive === false && !isAdmin) {
-=======
+
                 Connection Ready
               </span>
               <span>v2.0.6 - SECURE AUTH</span>
@@ -6222,7 +6204,7 @@ export default function App() {
 
   // Maintenance screen
   if (appConfig && !appConfig.isActive) {
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
     return (
       <div className={cn("h-screen flex items-center justify-center p-4", tc.bg)}>
         <div className={cn("w-full max-w-md p-8 text-center space-y-4", tc.border, tc.bg)}>
@@ -6237,18 +6219,18 @@ export default function App() {
   }
 
   return (
-<<<<<<< HEAD
+
     <div className={cn("h-screen h-[100dvh] flex flex-col font-sans overflow-hidden text-sm relative transition-all duration-500 overscroll-none", tc.bg)} style={{ maxHeight: '-webkit-fill-available' }}>
       {renderPeerAudios()}
       {showWelcome && renderWelcomeWindow()}
       {isAdmin && renderAdminDashboard()}
       {renderFirstLoginOverlay()}
-=======
+
     <div className={cn("h-screen flex flex-col font-sans overflow-hidden text-sm relative transition-all duration-500", tc.bg)}>
       {renderPeerAudios()}
       {showWelcome && renderWelcomeWindow()}
       {isAdmin && renderAdminDashboard()}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 
       {/* Private Room Passcode Modal */}
       {isJoiningPrivate && (
@@ -6342,21 +6324,21 @@ export default function App() {
                           className={cn("flex items-center justify-between p-2 rounded-xl", tc.itemHover)}
                         >
                           <div className="flex items-center gap-3">
-<<<<<<< HEAD
+
                             <div 
                               className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ring-2 ring-white ring-offset-1"
                               style={{ backgroundColor: friend.color || '#818cf8' }}
                             >
-=======
+
                             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white ring-offset-1">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                               {friend.username?.charAt(0)}
                             </div>
                             <span className={cn("text-xs font-bold", tc.text)}>{friend.username}</span>
                           </div>
                           <button 
                             onClick={() => {
-<<<<<<< HEAD
+
                               socketRef.current?.emit('invite-user', { 
                                 to: fUserId, 
                                 roomId: roomId, 
@@ -6367,7 +6349,7 @@ export default function App() {
                                 setInviteStatusMessage(null);
                                 setShowInviteModal(false);
                               }, 2000);
-=======
+
                               if (confirm(`${friend.username}さんに招待を送りますか？`)) {
                                 socketRef.current?.emit('invite-user', { 
                                   to: fUserId, 
@@ -6380,7 +6362,7 @@ export default function App() {
                                   setShowInviteModal(false);
                                 }, 2000);
                               }
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                             }}
                             className={cn("text-[10px] px-3 py-1.5 font-bold rounded-lg shadow-sm border border-transparent", tc.btn)}
                           >
@@ -6399,19 +6381,19 @@ export default function App() {
 
       {/* Friend Search Explorer */}
       {isSearchingFriends && (
-<<<<<<< HEAD
+
         <div className="fixed inset-0 z-[500] flex items-start justify-center bg-black/60 backdrop-blur-sm p-4 pt-20">
           <motion.div 
             initial={{ scale: 0.95, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             className={cn("w-full max-w-lg h-[550px] flex flex-col shadow-2xl overflow-hidden rounded-xl", tc.bg, tc.border)}
-=======
+
         <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <motion.div 
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className={cn("w-full max-w-lg h-[600px] flex flex-col shadow-2xl overflow-hidden rounded-xl", tc.bg, tc.border)}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
           >
             <div className={cn("flex justify-between items-center px-4 py-2 min-h-[32px] shrink-0", tc.titleBar)}>
                <div className="flex items-center gap-2">
@@ -6430,11 +6412,11 @@ export default function App() {
                </button>
             </div>
 
-<<<<<<< HEAD
+
             <div className="p-4 pt-6 border-b border-black/5 shrink-0">
-=======
+
             <div className="p-4 border-b border-black/5 shrink-0">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <div className="relative flex gap-2">
                 <div className="relative flex-1">
                   <input 
@@ -6443,11 +6425,11 @@ export default function App() {
                     value={friendSearchQuery}
                     onChange={(e) => setFriendSearchQuery(e.target.value)}
                     className={cn("w-full py-3 pl-10 pr-4 rounded-xl text-sm outline-none border-2", tc.inset, tc.text, "focus:border-blue-500")}
-<<<<<<< HEAD
+
                     autoFocus={false}
-=======
+
                     autoFocus
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         if (friendSearchQuery.trim()) {
@@ -6494,16 +6476,16 @@ export default function App() {
                       className={cn("flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all", tc.itemHover)}
                     >
                       <div className="relative">
-<<<<<<< HEAD
+
                         <div 
                           className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ring-2 ring-white shadow-sm"
                           style={{ backgroundColor: (Object.values(friends).find(f => (f as any).username === (user as any).username) as any)?.color || '#3b82f6' }}
                         >
                           {(user as any).username.charAt(0)}
-=======
+
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold ring-2 ring-white">
                           {user.username.charAt(0)}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                         </div>
                         <div className={cn("absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white", user.status === 'online' ? "bg-green-500" : "bg-gray-400")} />
                       </div>
@@ -6555,10 +6537,10 @@ export default function App() {
               <div className="mt-8 grid grid-cols-2 gap-3 w-full">
                  <button 
                    onClick={() => {
-<<<<<<< HEAD
+
                      if (showFriendProfile.id === myId) return;
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
                      // Start Friend Request logic
                      setFriendRequestingId(showFriendProfile.id);
                      setFriendRequestStatus('ad');
@@ -6584,7 +6566,7 @@ export default function App() {
                        });
                      }, 1000);
                    }}
-<<<<<<< HEAD
+
                    className={cn(
                      "flex flex-col items-center justify-center gap-1 py-4 font-bold rounded-2xl shadow-lg transition-transform active:scale-95",
                      showFriendProfile.id === myId ? "bg-gray-100 text-gray-300 cursor-not-allowed" : tc.btn
@@ -6593,12 +6575,12 @@ export default function App() {
                  >
                    <UserPlus className="w-5 h-5 text-current" />
                    <span className="text-[10px]">{showFriendProfile.id === myId ? "自分です" : "友達登録"}</span>
-=======
+
                    className={cn("flex flex-col items-center justify-center gap-1 py-4 font-bold rounded-2xl shadow-lg transition-transform active:scale-95", tc.btn)}
                  >
                    <UserPlus className="w-5 h-5" />
                    <span className="text-[10px]">友達登録</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                  </button>
                  <button 
                    onClick={() => setShowFriendProfile(null)}
@@ -6630,11 +6612,11 @@ export default function App() {
                   <div className={cn("w-full h-40 flex flex-col items-center justify-center rounded-xl relative overflow-hidden", tc.inset)}>
                     <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-blue-100 animate-pulse" />
                     <div className="z-10 flex flex-col items-center gap-2">
-<<<<<<< HEAD
+
                        <Heart className="w-10 h-10 text-yellow-500 animate-bounce" />
-=======
+
                        <Zap className="w-10 h-10 text-yellow-500 animate-bounce" />
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                        <p className="text-[10px] font-black uppercase tracking-tighter opacity-40">AiCHA Premium AD</p>
                        <p className={cn("text-xs font-bold text-center", tc.text)}>友達登録確認中…</p>
                     </div>
@@ -6724,7 +6706,7 @@ export default function App() {
             "lg:flex"
           )}>
             <div className="flex-1 h-full flex flex-col overflow-hidden">
-<<<<<<< HEAD
+
                <div className={cn(tc.titleBar, "flex items-center justify-between px-4 py-2 text-white shrink-0 hidden lg:flex")}>
                   <div className="flex items-center gap-2">
                     <Info className="w-4 h-4" />
@@ -6740,11 +6722,11 @@ export default function App() {
                   <button onClick={() => setShowMobileInfo(false)} className="p-1 hover:bg-white/20 rounded">
                     <X className="w-4 h-4" />
                   </button>
-=======
+
                <div className={cn(tc.titleBar, "flex items-center px-4 py-2 text-white shrink-0 hidden lg:flex")}>
                   <Info className="w-4 h-4 mr-2" />
                   <span className="font-bold">ウェルカムインフォメーション</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                </div>
                <div className="flex-1 min-h-0 bg-white/40">
                  <WelcomeContent showStartButton={false} />
@@ -6771,7 +6753,7 @@ export default function App() {
               initial={{ opacity: 0, x: 50, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-<<<<<<< HEAD
+
               className={cn("p-3 shadow-xl min-w-[200px] border-l-4 overflow-hidden", tc.border, tc.bg, theme === 'classic95' ? "border-blue-600" : (theme === 'cute' ? "border-pink-500 rounded-xl" : "border-blue-500 rounded-lg"))}
             >
               <div className="flex items-center justify-between gap-3">
@@ -6789,13 +6771,13 @@ export default function App() {
                     {notif.actionLabel || '開く'}
                   </button>
                 )}
-=======
+
               className="win-border bg-[#d4d0c8] p-3 shadow-xl min-w-[200px] border-l-4 border-blue-600"
             >
               <div className="flex items-center gap-3">
                 <div className="bg-blue-600 text-white p-1">ℹ️</div>
                 <div className="font-bold text-[11px]">{notif.text}</div>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               </div>
             </motion.div>
           ))}
@@ -6813,7 +6795,7 @@ export default function App() {
             className={cn("fixed z-50 py-1 min-w-[140px] shadow-lg", THEME_CONFIG[theme].border, THEME_CONFIG[theme].bg)}
             style={{ left: menuPosition.x, top: menuPosition.y }}
           >
-<<<<<<< HEAD
+
             {/* Safe data access with guards */}
             {(() => {
               const targetUid = getTargetUid(selectedUserId);
@@ -6928,7 +6910,7 @@ export default function App() {
           </div>
         </>
       )}
-=======
+
             <button 
               className={cn("w-full text-left px-4 py-1.5 flex items-center gap-2 whitespace-nowrap", THEME_CONFIG[theme].itemHover)}
               onClick={() => { setShowProfile(true); setMenuPosition(null); }}
@@ -7017,7 +6999,7 @@ export default function App() {
         </>
       )}
 
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
       {/* Call flow overlays */}
       {callRequest && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60">
@@ -7028,29 +7010,29 @@ export default function App() {
             <div className="p-6 text-center space-y-4">
               {callRequest.status === 'ad' ? (
                 <>
-<<<<<<< HEAD
+
                   <Badge variant="outline" className="mb-2">広告表示中</Badge>
-=======
+
                   <Badge variant="outline" className="mb-2">ADVERTISEMENT</Badge>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                   <p className={cn("text-lg font-bold", THEME_CONFIG[theme].text)}>
                     通話確認中...
                   </p>
                   <p className="text-[12px] opacity-70">
-<<<<<<< HEAD
+
                     まもなく開始されます ({callTimer}s)
-=======
+
                     スポンサー広告をお楽しみください ({callTimer}s)
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                   </p>
                   <div className="text-4xl font-bold text-blue-600 font-mono">
                     {callTimer}
                   </div>
-<<<<<<< HEAD
+
                   <p className="text-[10px] text-gray-500">準備が整い次第通話が開始されます</p>
-=======
+
                   <p className="text-[10px] text-gray-500">広告が終了すると通話が開始されます</p>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                 </>
               ) : callRequest.status === 'waiting' ? (
                 <div className="space-y-4">
@@ -7131,7 +7113,7 @@ export default function App() {
       )}
 
       {activeCall && (
-<<<<<<< HEAD
+
         <div className="fixed inset-0 z-[210] flex flex-col bg-black/90">
           <div className="absolute inset-0 overflow-hidden">
             <video 
@@ -7209,7 +7191,7 @@ export default function App() {
           </div>
         </div>
       )}
-=======
+
         <div className="fixed inset-0 z-[210] flex flex-col bg-[#008080] lg:p-10 p-2">
           <div className={cn(THEME_CONFIG[theme].border, THEME_CONFIG[theme].bg, "flex-1 flex flex-col shadow-2xl max-w-4xl mx-auto w-full overflow-hidden")}>
             <div className={cn(THEME_CONFIG[theme].titleBar, "text-white p-2 font-bold flex justify-between items-center")}>
@@ -7274,7 +7256,7 @@ export default function App() {
               P2P暗号化された安全な通話です
             </div>
           </div>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 
           <audio 
             autoPlay 
@@ -7288,11 +7270,11 @@ export default function App() {
               }
             }}
           />
-<<<<<<< HEAD
-=======
+
+
         </div>
       )}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
 
       {showProfile && selectedUserId && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-[60]">
@@ -7335,11 +7317,11 @@ export default function App() {
             <div className={cn(tc.titleBar, "flex justify-between p-2 items-center")}>
               <div className="flex items-center gap-2 text-white">
                 <MessageSquare className="w-4 h-4" />
-<<<<<<< HEAD
+
                 <span className="font-bold text-xs truncate max-w-[200px]">個別：{resolveUserName(selectedUserId)}</span>
-=======
+
                 <span className="font-bold text-xs truncate max-w-[200px]">個別：{onlineUsers[selectedUserId]?.username || friends[selectedUserId]?.username || 'User'}</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               </div>
               <button onClick={() => setShowPrivateChat(false)} className={cn(tc.btn, "w-6 h-6 flex items-center justify-center")}>×</button>
             </div>
@@ -7349,12 +7331,12 @@ export default function App() {
                   <div className="space-y-2">
                     {(privateMessages[selectedUserId] || []).map(msg => (
                       <div key={msg.id} className={cn("flex flex-col", msg.senderId === myId ? "items-end" : "items-start")}>
-<<<<<<< HEAD
+
                         <div className="flex items-center gap-1 mb-0.5 px-1">
                           <span className="text-[8px] opacity-40 font-bold">{msg.senderName}</span>
                         </div>
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
                         <div className={cn(
                           "px-3 py-1.5 text-[11px] font-bold shadow-sm max-w-[85%]", 
                           msg.senderId === myId 
@@ -7363,13 +7345,13 @@ export default function App() {
                         )}>
                           {msg.text}
                         </div>
-<<<<<<< HEAD
+
                         <span className="text-[7px] opacity-30 mt-0.5 font-mono">
                           {new Intl.DateTimeFormat('ja-JP', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tokyo' }).format(new Date(msg.timestamp))}
                         </span>
-=======
+
                         <span className="text-[8px] opacity-30 mt-1 italic">{msg.senderName}</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       </div>
                     ))}
                     {(!privateMessages[selectedUserId] || privateMessages[selectedUserId].length === 0) && (
@@ -7410,7 +7392,7 @@ export default function App() {
       {/* Pending File Send Confirmation */}
       {pendingFile && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[110]">
-<<<<<<< HEAD
+
           <div className={cn("w-[300px] shadow-2xl rounded-2xl overflow-hidden", tc.bg, tc.border)}>
             <div className={cn("win-title-bar flex justify-between", tc.titleBar)}>
               <span>ファイル送信の確認</span>
@@ -7420,12 +7402,12 @@ export default function App() {
               >
                 ×
               </button>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[300px] shadow-2xl">
             <div className="win-title-bar flex justify-between">
               <span>ファイル送信の確認</span>
               <button onClick={() => setPendingFile(null)} className="win-btn px-1 h-4">×</button>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             </div>
             <div className="p-4 space-y-4 text-center">
               <div className="w-12 h-12 bg-blue-100 win-inset mx-auto flex items-center justify-center">
@@ -7464,13 +7446,13 @@ export default function App() {
       {/* Incoming File Request Prompt */}
       {incomingFileRequest && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
-<<<<<<< HEAD
+
           <div className={cn("w-[300px] shadow-2xl rounded-2xl overflow-hidden", tc.bg, tc.border)}>
             <div className={cn("win-title-bar", tc.titleBar)}>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[300px] shadow-2xl">
             <div className="win-title-bar">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <span>ファイル受信の確認</span>
             </div>
             <div className="p-4 space-y-4 text-center">
@@ -7563,7 +7545,7 @@ export default function App() {
                 システム
               </button>
               <button 
-<<<<<<< HEAD
+
                 onClick={() => setSettingsTab('audio')}
                 className={cn(
                   "px-3 py-1 text-[11px] font-bold border-b-0 rounded-t-[3px] transition-none",
@@ -7574,8 +7556,8 @@ export default function App() {
                 オーディオ
               </button>
               <button 
-=======
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
                 onClick={() => setSettingsTab('block')}
                 className={cn(
                   "px-3 py-1 text-[11px] font-bold border-b-0 rounded-t-[3px] transition-none",
@@ -7605,7 +7587,7 @@ export default function App() {
                     {/* System Settings Section */}
                     <div className={cn("p-3 space-y-2", tc.border, tc.bg)}>
                       <h3 className={cn("font-bold text-xs border-b pb-1", theme === 'classic95' ? "border-[#808080]" : "border-white/10", tc.text)}>システム設定</h3>
-<<<<<<< HEAD
+
                       <div className={cn("space-y-1.5 text-xs", tc.text)}>
                         <span>サウンド・通知音</span>
                         <div className="flex gap-1">
@@ -7624,7 +7606,7 @@ export default function App() {
                             </button>
                           ))}
                         </div>
-=======
+
                       <div className={cn("flex items-center justify-between text-xs", tc.text)}>
                         <span>音声通知</span>
                         <input type="checkbox" defaultChecked className="win-inset" />
@@ -7632,25 +7614,25 @@ export default function App() {
                       <div className={cn("flex items-center justify-between text-xs", tc.text)}>
                         <span>入室通知</span>
                         <input type="checkbox" defaultChecked className="win-inset" />
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       </div>
                     </div>
 
                     <div className={cn("p-3 space-y-2", tc.border, tc.bg)}>
                       <h3 className={cn("font-bold text-xs border-b pb-1 uppercase tracking-tight", theme === 'classic95' ? "border-[#808080]" : "border-white/10", tc.text)}>システム状況</h3>
                       <div className="flex justify-between text-xs">
-<<<<<<< HEAD
+
                         <span className={tc.secondaryText}>音声状態:</span>
-=======
+
                         <span className={tc.secondaryText}>音声出力:</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                         <span className={cn("font-bold", tc.text)}>{isSpeaking ? "配信中" : "受信中"}</span>
                       </div>
                       <div className="flex justify-between text-xs">
                         <span className={tc.secondaryText}>接続数:</span>
                         <span className={cn("font-bold", tc.text)}>{Object.keys(peers).length} ピア同期中</span>
                       </div>
-<<<<<<< HEAD
+
                     </div>
 
                     {/* Quality Settings (Moved from Audio tab as requested) */}
@@ -7701,7 +7683,7 @@ export default function App() {
                     <div className={cn("p-3 space-y-3", tc.border, tc.bg)}>
                       <h3 className={cn("font-bold text-xs border-b pb-1 flex items-center gap-1", theme === 'classic95' ? "border-[#808080]" : "border-white/10", tc.text)}>
                         <Mic className="w-3.5 h-3.5" /> オーディオ入出力
-=======
+
                       <div className="flex justify-between text-xs">
                         <span className={tc.secondaryText}>データ制限:</span>
                         <span className={cn("font-bold", dataSaverMode ? "text-orange-600" : (theme === 'cool' ? "text-green-400" : "text-green-700"))}>
@@ -7784,7 +7766,7 @@ export default function App() {
                     <div className={cn("p-3 space-y-3", tc.border, tc.bg)}>
                       <h3 className={cn("font-bold text-xs border-b pb-1 flex items-center gap-1", theme === 'classic95' ? "border-[#808080]" : "border-white/10", tc.text)}>
                         <Mic className="w-3.5 h-3.5" /> オーディオ設定
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       </h3>
                       
                       <div className="space-y-2">
@@ -7795,11 +7777,11 @@ export default function App() {
                           <select 
                             value={selectedInput}
                             onChange={(e) => setSelectedInput(e.target.value)}
-<<<<<<< HEAD
+
                             className={cn("w-full px-1 py-1 text-xs outline-none rounded", tc.inset, tc.text)}
-=======
+
                             className={cn("w-full px-1 py-0.5 text-xs outline-none rounded", tc.inset, tc.text)}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                           >
                             <option value="default" className={tc.bg}>デフォルトのデバイス</option>
                             {audioDevices.inputs.map(device => (
@@ -7815,26 +7797,26 @@ export default function App() {
                           <select 
                             value={selectedOutput}
                             onChange={(e) => setSelectedOutput(e.target.value)}
-<<<<<<< HEAD
+
                             className={cn("w-full px-1 py-1 text-xs outline-none rounded", tc.inset, tc.text)}
-=======
+
                             className={cn("w-full px-1 py-0.5 text-xs outline-none rounded", tc.inset, tc.text)}
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                           >
                             <option value="default" className={tc.bg}>デフォルトのデバイス</option>
                             {audioDevices.outputs.map(device => (
                               <option key={device.deviceId} value={device.deviceId} className={tc.bg}>{device.label || `スピーカー ${device.deviceId.slice(0, 5)}`}</option>
                             ))}
                           </select>
-<<<<<<< HEAD
-=======
+
+
                           <p className={cn("text-[9px] italic", tc.secondaryText)}>* スピーカー選択は一部のブラウザのみ対応しています</p>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                         </div>
 
                         <div className={cn("p-2 space-y-2 rounded", tc.inset)}>
                           <div className="flex items-center justify-between">
-<<<<<<< HEAD
+
                             <span className="text-[10px] font-bold">マイクテスト</span>
                             <button 
                               onClick={() => isMicTesting ? stopMicTest() : startMicTest()}
@@ -7865,7 +7847,7 @@ export default function App() {
                         >
                           オーディオ設定を即時適用
                         </button>
-=======
+
                             <span className={cn("text-[11px] font-bold", tc.text)}>マイクテスト</span>
                             {!isMicTesting ? (
                               <button onClick={startMicTest} className={cn("px-4 py-0.5 text-[10px]", tc.btn)}>開始</button>
@@ -7894,15 +7876,15 @@ export default function App() {
                             />
                           )}
                         </div>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                       </div>
                     </div>
                   </>
                 )}
-<<<<<<< HEAD
-=======
 
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
+
+
                 {settingsTab === 'block' && (
                   <div className={cn("p-2 flex flex-col min-h-[300px]", tc.border, tc.bg)}>
                     <h3 className={cn("font-bold text-xs border-b mb-2 pb-1 flex items-center gap-1", theme === 'classic95' ? "border-[#808080]" : "border-white/10", tc.text)}>
@@ -8066,19 +8048,19 @@ export default function App() {
               {status.status === 'ad' && (
                 <div className="space-y-3">
                   <div className={cn("p-2 h-[150px] flex flex-col items-center justify-center overflow-hidden rounded", tc.inset)}>
-<<<<<<< HEAD
+
                     <p className={cn("font-bold text-sm mb-1 uppercase tracking-tighter italic", tc.activeText)}>あいちゃ2.0 プレミアム通信準備</p>
                     <p className={cn("text-[10px] font-bold mb-2", tc.text)}>準備をしています…</p>
                     <div className="relative w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center rounded">
                       <span className="text-[40px] animate-pulse">🚀</span>
                       <div className="absolute bottom-1 right-1 text-[8px] text-gray-400">提供: あいちゃ2.0</div>
-=======
+
                     <p className={cn("font-bold text-sm mb-1 uppercase tracking-tighter italic", tc.activeText)}>AiCHA 2.0 プレミアム広告</p>
                     <p className={cn("text-[10px] font-bold mb-2", tc.text)}>プライベートメッセージを準備しています…</p>
                     <div className="relative w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center rounded">
                       <span className="text-[40px] animate-pulse">🚀</span>
                       <div className="absolute bottom-1 right-1 text-[8px] text-gray-400">提供: AiCHA 2.0</div>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                     </div>
                   </div>
                   <p className={cn("text-xs font-bold italic", tc.text)}>{status.name}さんの受信確認中...</p>
@@ -8160,28 +8142,28 @@ export default function App() {
       {/* Room Waiting Overlay */}
       {roomWaitingPosition !== null && !isRoomWaitAlertOpen && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[110]">
-<<<<<<< HEAD
+
           <div className={cn("w-[320px] shadow-2xl p-6 text-center space-y-6 rounded-2xl", tc.bg, tc.border)}>
             <div className="relative w-24 h-24 mx-auto">
               <div className={cn("absolute inset-0 border-4 border-dashed rounded-full animate-spin duration-[4s]", tc.activeText || "border-blue-600")} />
               <div className={cn("absolute inset-0 flex items-center justify-center font-bold text-3xl", tc.activeText || "text-blue-600")}>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[320px] shadow-2xl p-6 text-center space-y-6">
             <div className="relative w-24 h-24 mx-auto">
               <div className="absolute inset-0 border-4 border-dashed border-[#000080] rounded-full animate-spin duration-[4s]" />
               <div className="absolute inset-0 flex items-center justify-center font-bold text-3xl text-[#000080]">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                 {roomWaitingPosition}
               </div>
             </div>
             <div className="space-y-2">
-<<<<<<< HEAD
+
               <h2 className={cn("text-xl font-bold", tc.activeText || "text-blue-600")}>入室待ち</h2>
               <p className={cn("text-sm", tc.text)}>現在、ルームは満員です。<br/>順番が来たら通知されます。</p>
-=======
+
               <h2 className="text-xl font-bold text-[#000080]">入室待ち</h2>
               <p className="text-sm">現在、ルームは満員です。<br/>順番が来たら通知されます。</p>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <p className="text-[10px] text-gray-500 italic">待機順位: {roomWaitingPosition}番目</p>
             </div>
             <button 
@@ -8189,11 +8171,11 @@ export default function App() {
                 setRoomWaitingPosition(null);
                 setRoomId('global');
               }}
-<<<<<<< HEAD
+
               className={cn("w-full py-2 font-bold", tc.btn)}
-=======
+
               className="win-btn w-full py-2 font-bold"
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             >
               待機をキャンセル
             </button>
@@ -8204,7 +8186,7 @@ export default function App() {
       {/* Heart Limit / Paid Option Modal */}
       {showHeartLimitModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[110]">
-<<<<<<< HEAD
+
           <div className={cn("w-full max-w-[320px] shadow-2xl overflow-hidden rounded-lg", tc.border, tc.bg)}>
             <div className={cn("flex justify-between items-center px-1 py-1 min-h-[26px]", tc.titleBar)}>
               <span className="text-white text-[11px] font-bold px-1">ハート送信の制限</span>
@@ -8275,7 +8257,7 @@ export default function App() {
                   いいえ
                 </button>
               </div>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[350px] shadow-2xl">
             <div className="win-title-bar flex justify-between bg-gradient-to-r from-pink-500 to-rose-500">
               <span className="text-white">ハート送信の制限</span>
@@ -8301,7 +8283,7 @@ export default function App() {
                 </div>
               </div>
               <button onClick={() => setShowHeartLimitModal(false)} className="win-btn w-full py-2">閉じる</button>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             </div>
           </div>
         </div>
@@ -8309,7 +8291,7 @@ export default function App() {
 
       {/* Heart Confirmation Modal */}
       {showHeartConfirm && selectedUserId && (
-<<<<<<< HEAD
+
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[120]">
           <div className={cn("w-full max-w-[280px] shadow-2xl overflow-hidden rounded-lg", tc.border, tc.bg)}>
             <div className={cn("flex justify-between items-center px-1 py-1 min-h-[26px]", tc.titleBar)}>
@@ -8343,7 +8325,7 @@ export default function App() {
                   className={cn("w-20 py-2 opacity-60 font-bold", tc.btn)}
                 >
                   しない
-=======
+
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[70]">
           <div className="win-border bg-[#d4d0c8] w-[300px] shadow-2xl">
             <div className="win-title-bar flex justify-between bg-pink-600">
@@ -8372,7 +8354,7 @@ export default function App() {
                   className="win-btn w-24 py-1"
                 >
                   やめる
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                 </button>
               </div>
             </div>
@@ -8437,20 +8419,20 @@ export default function App() {
               <button onClick={() => setShowFriendConfirm(false)} className="win-btn px-1 h-4">×</button>
             </div>
             <div className="p-4 space-y-4 text-center">
-<<<<<<< HEAD
+
               <p className="font-bold">「{maskName(resolveUserName(selectedUserId), selectedUserId)}」さんを友達登録しますか？</p>
-=======
+
               <p className="font-bold">「{maskName(onlineUsers[selectedUserId]?.username || 'ユーザー', selectedUserId)}」さんを友達登録しますか？</p>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <div className="flex justify-center gap-3">
                 <button 
                   onClick={() => {
                     setShowFriendConfirm(false);
-<<<<<<< HEAD
+
                     setFriendAdTarget({ id: selectedUserId, username: resolveUserName(selectedUserId) });
-=======
+
                     setFriendAdTarget({ id: selectedUserId, username: onlineUsers[selectedUserId]?.username || 'ユーザー' });
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                     setFriendAdCountdown(10);
                     setShowFriendAd(true);
                   }}
@@ -8473,27 +8455,27 @@ export default function App() {
       {/* Ad Overlay (Sender Side) */}
       {showFriendAd && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[110]">
-<<<<<<< HEAD
+
           <div className={cn("w-[320px] shadow-2xl overflow-hidden rounded-2xl", tc.bg, tc.border)}>
             <div className="win-title-bar flex justify-between bg-gradient-to-r from-orange-500 to-red-500">
               <span className="text-white">【友達登録確認中です】</span>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[320px] shadow-2xl overflow-hidden">
             <div className="win-title-bar flex justify-between bg-gradient-to-r from-orange-500 to-red-500">
               <span className="text-white">SPONSORED ADVERTISEMENT</span>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <span className="bg-red-700 px-1 text-[10px] text-white rounded">残り {friendAdCountdown}秒</span>
             </div>
             <div className="p-0 border-b border-[#808080] bg-white h-[200px] flex flex-col items-center justify-center relative overflow-hidden group">
                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=400&h=250" className="w-full h-full object-cover opacity-80" alt="Ad" referrerPolicy="no-referrer" />
                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
-<<<<<<< HEAD
+
                  <h2 className="text-white font-bold text-xl drop-shadow-md">アイチャ・フレンドリクエスト</h2>
                  <p className="text-white text-[10px] leading-tight">ただいまリクエストを準備しています。しばらくお待ちください。<br/>友達が増えると、チャットがもっと楽しくなりますよ！</p>
-=======
+
                  <h2 className="text-white font-bold text-xl drop-shadow-md">アイチャ・プレミアム</h2>
                  <p className="text-white text-[10px] leading-tight">友達を増やして、もっと楽しく。<br/>今すぐ登録して、特別な絵文字をアンロックしよう！</p>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
                </div>
             </div>
             <div className="p-4 flex flex-col items-center gap-3">
@@ -8505,11 +8487,11 @@ export default function App() {
                   className="h-full bg-orange-500"
                 />
               </div>
-<<<<<<< HEAD
+
               <p className="text-[10px] text-gray-600 italic">まもなく送信されます...</p>
-=======
+
               <p className="text-[10px] text-gray-600 italic">広告視聴後にリクエストが送信されます...</p>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             </div>
           </div>
         </div>
@@ -8518,13 +8500,13 @@ export default function App() {
       {/* Incoming Friend Request (Receiver Side) */}
       {incomingFriendRequest && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[110]">
-<<<<<<< HEAD
+
           <div className={cn("w-[300px] shadow-2xl rounded-2xl overflow-hidden", tc.bg, tc.border)}>
             <div className={cn("win-title-bar", tc.titleBar)}>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[300px] shadow-2xl">
             <div className="win-title-bar bg-gradient-to-r from-[#000080] to-[#008080]">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <span className="text-white flex items-center gap-2">
                 <UserPlus className="w-3.5 h-3.5" /> 友達登録依頼
               </span>
@@ -8728,11 +8710,11 @@ export default function App() {
               </div>
             </div>
 
-<<<<<<< HEAD
+
             <div className={cn("p-3 pt-2 border-t flex justify-end gap-2 shrink-0 z-30", theme === 'classic95' ? "border-[#808080]" : "border-white/10", tc.bg)}>
-=======
+
             <div className={cn("p-3 pt-2 border-t flex justify-end gap-2 shrink-0 z-30", theme === 'classic95' ? "border-[#808080] bg-[#d4d0c8]" : "border-white/10", tc.bg)}>
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
               <button 
                 onClick={() => setShowFilesExplorer(false)} 
                 className={cn("w-24 py-1 font-bold", tc.btn)}
@@ -8871,11 +8853,11 @@ export default function App() {
 
       {showMessengerConfirm && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/30 transition-all duration-300">
-<<<<<<< HEAD
+
           <div className={cn("w-[320px] shadow-2xl animate-in zoom-in-95 duration-200 rounded-2xl", tc.bg, tc.border)}>
-=======
+
           <div className="win-border bg-[#d4d0c8] w-[320px] shadow-2xl animate-in zoom-in-95 duration-200">
->>>>>>> 12f5cc66f48dbf30dc9037949bdfdaa3d684a1a3
+
             <div className="win-title-bar">
               <span>メッセンジャーの起動</span>
             </div>
